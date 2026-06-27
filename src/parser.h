@@ -4,7 +4,29 @@
 #include <vector>
 using namespace std;
 
-// alex might use this idk
 // functions to parse the files instead of clumping it all in main()
+// or anything that can be shared between trie and hash headers
+
+struct GenderedData {
+    vector<pair<int,int>> M;
+    vector<pair<int,int>> F;
+    // instead of using map<>, this struct does the same thing
+    // see previous commits if you're curious what changed
+    /*
+         basically like this:
+        'M' = {
+            {year, count},
+            {2019, 19234},
+            {2020, 12894}
+        }
+        'F' = {
+            {2019, 19234},
+            {2020, 12894},
+            etc
+        }
+        */
+    vector<pair<int,int>>& get(char gender); // see .cpp
+};
+
 
 #endif //COP3530_PROJECT_2_PARSER_H
