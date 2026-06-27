@@ -1,53 +1,74 @@
 #include <catch2/catch_test_macros.hpp>
 #include <iostream>
+#include "hash.h"
+#include "parser.h"
+#include "trie.h"
 
-// uncomment and replace the following with your own headers
-// #include "AVL.h"
+/*
 
-using namespace std;
+trying to think of things to test: (feel free to add some)
 
-// the syntax for defining a test is below. It is important for the name to be unique, but you can group multiple tests with [tags]. A test can have [multiple][tags] using that syntax.
-TEST_CASE("Example Test Name - Change me!", "[flag]"){
-	// instantiate any class members that you need to test here
-	int one = 1;
+both structures return identical results for same query (trieResult == hashResult)
+upper/lower case query handling (liam Liam and LIAM return same result)
+gender variation (m sam vs f sam)
 
-	// anything that evaluates to false in a REQUIRE block will result in a failing test 
-	REQUIRE(one == 0); // fix me!
+exact lookup:
+exact name lookup (total)
+exact name lookup (one year)
 
-	// all REQUIRE blocks must evaluate to true for the whole test to pass
-	REQUIRE(false); // also fix me!
+prefixes:
+prefix returns correctly
+single-character prefix
+
+year handling:
+year range (2019-2021) sum of years
+
+combined situations:
+top 10 names that start with B in 2019
+
+file reading tests:
+lines parse correctly
+multiple files load without interfering with each other
+total occurrences throughout years accumulates correctly
+after all files loaded, total records inserted into trie and hash should be equal
+
+edge cases:
+name not found
+year out of range (I think 1880? and 2025? I'll check the ssa files later)
+year out of range for that name (a lot of names/spellings are new)
+top-N where N is larger than actual results (top 20 names but there's only a few that match)
+
+relevant flag names for consistency:
+exact, prefix, year, edge, top, trie, hash, gender, format, file, range
+
+*/
+
+
+void insertTestData(Trie& trie, HashTable& hash) {
+    // call this in tests, that way tests don't rely on reading real files
+    // (unless the test is to read files of course)
+
+    trie.insert("Albert",   'M', 2020, 500);
+    trie.insert("Albert",   'M', 2021, 700);
+
+    hash.insert("Albert",   'M', 2020, 500);
+    hash.insert("Albert",   'M', 2021, 700);
+    // add a lot more
 }
 
-TEST_CASE("Test 2", "[flag]"){
-	// you can also use "sections" to share setup code between tests, for example:
-	int one = 1;
 
-	SECTION("num is 2") {
-		int num = one + 1;
-		REQUIRE(num == 2);
-	};
-
-	SECTION("num is 3") {
-		int num = one + 2;
-		REQUIRE(num == 3);
-	};
-
-	// each section runs the setup code independently to ensure that they don't affect each other
+TEST_CASE("Exact name search returns correct all time total", "[exact][trie][hash]") {
+    Trie trie;
+    HashTable hash;
+    insertTestData(trie, hash);
+    // Albert (M) total: 500 + 700 = 1200
+    REQUIRE(trie.getTotal("Albert", 'M') == 1200);
+    REQUIRE(hash.getTotal("Albert", 'M') == 1200);
 }
 
-// you must write 5 unique, meaningful tests for credit on the testing portion of this project!
-
-// the provided test from the template is below.
-
-TEST_CASE("Example BST Insert", "[flag]"){
-	/*
-		MyAVLTree tree;   // Create a Tree object
-		tree.insert(3);
-		tree.insert(2);
-		tree.insert(1);
-		std::vector<int> actualOutput = tree.inorder();
-		std::vector<int> expectedOutput = {1, 2, 3};
-		REQUIRE(expectedOutput.size() == actualOutput.size());
-		REQUIRE(actualOutput == expectedOutput);
-	*/
+TEST_CASE("Exact name search for a single year returns correct count", "[exact][year][trie][hash]") {
+    Trie trie; HashTable hash;
+    insertTestData(trie, hash);
+    REQUIRE(trie.getYear("Albert", 'M', 2021) == 700);
+    REQUIRE(hash.getYear("Albert", 'M', 2021) == 700);
 }
