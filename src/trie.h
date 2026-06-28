@@ -8,18 +8,18 @@ using namespace std;
 
 class Trie {
 
-    struct Node {
-        Node* children[26] = {}; // 26 letters (A-Z)
+    struct TrieNode {
+        TrieNode* children[26] = {}; // 26 letters (A-Z)
         bool isName = false;
 
         // fills in data only if isname true
         GenderedData data; // see parser.h
 
         // constructor
-        Node();
+        TrieNode();
     };
 
-    Node* root;
+    TrieNode* root;
 
 public:
 
@@ -32,7 +32,7 @@ public:
     // needed a destructor
     ~Trie();
     //helper for destructor
-    void clear(Node* curr);
+    void clear(TrieNode* curr);
 };
 
 
