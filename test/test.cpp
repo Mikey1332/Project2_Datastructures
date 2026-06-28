@@ -44,26 +44,26 @@ all-time, exact, file, format, gender, gendereddata, hash, insert, prefix, range
 
 */
 
-//
-// Trie makeTestTrie() {
-//     Trie trie;
-//
-//     trie.insert("Albert",   'M', 2020, 500);
-//     trie.insert("Albert",   'M', 2021, 700);
-//     trie.insert("Liam",     'M', 2019, 700);
-//     trie.insert("Liam",     'M', 2020, 680);
-//     trie.insert("Liam",     'M', 2021, 660);
-//     trie.insert("Bob",      'M', 2019, 600);
-//     trie.insert("Bob",      'M', 2020, 580);
-//     trie.insert("Sam",      'M', 2019, 200);
-//     trie.insert("Sam",      'F', 2019, 150);
-//     trie.insert("Emma",     'F', 2019, 500);
-//     trie.insert("Emma",     'F', 2020, 480);
-//     trie.insert("Emma",     'F', 2021, 460);
-//     trie.insert("Emily",    'F', 2019, 300);
-//
-//     return trie;
-// }
+
+Trie makeTestTrie() {
+    Trie trie;
+
+    trie.insert("Albert",   'M', 2020, 500);
+    trie.insert("Albert",   'M', 2021, 700);
+    trie.insert("Liam",     'M', 2019, 700);
+    trie.insert("Liam",     'M', 2020, 680);
+    trie.insert("Liam",     'M', 2021, 660);
+    trie.insert("Bob",      'M', 2019, 600);
+    trie.insert("Bob",      'M', 2020, 580);
+    trie.insert("Sam",      'M', 2019, 200);
+    trie.insert("Sam",      'F', 2019, 150);
+    trie.insert("Emma",     'F', 2019, 500);
+    trie.insert("Emma",     'F', 2020, 480);
+    trie.insert("Emma",     'F', 2021, 460);
+    trie.insert("Emily",    'F', 2019, 300);
+
+    return trie;
+}
 
 // HashTable makeTestHash() {
 //     HashTable hash;
@@ -127,52 +127,52 @@ TEST_CASE("GenderedData getCount does not cross genders", "[gender][gendereddata
     REQUIRE(g.getCount('F', 2019) == 0);
 }
 
-// TEST_CASE("Trie getTotal returns correct all-time sum", "[all-time][exact][trie]") {
-//     Trie trie = makeTestTrie();
-//     // Liam M: 700 + 680 + 660 = 2040
-//     REQUIRE(trie.getTotal("Liam", 'M') == 2040);
-// }
-//
-// TEST_CASE("Trie getTotal returns zero for name not inserted", "[exact][trie]") {
-//     Trie trie = makeTestTrie();
-//     REQUIRE(trie.getTotal("xyz", 'M') == 0);
-// }
-//
-// TEST_CASE("Trie getTotal returns zero for correct name but wrong gender", "[gender][trie]") {
-//     Trie trie = makeTestTrie();
-//     REQUIRE(trie.getTotal("Bob", 'F') == 0);
-// }
-//
-// TEST_CASE("Trie getTotal M and F for same name are separate", "[gender][trie]") {
-//     Trie trie = makeTestTrie();
-//     // Sam M = 200, Sam F = 150
-//     REQUIRE(trie.getTotal("Sam", 'M') == 200);
-//     REQUIRE(trie.getTotal("Sam", 'F') == 150);
-// }
-//
-// TEST_CASE("Trie getTotal not affected by names sharing a prefix", "[exact][trie]") {
-//     Trie trie = makeTestTrie();
-//     // Emma and Emily share "Em" but totals must be separate
-//     REQUIRE(trie.getTotal("Emma",  'F') == 1440); // 500+480+460
-//     REQUIRE(trie.getTotal("Emily", 'F') == 300);
-// }
-//
-// TEST_CASE("Trie getYear returns correct count for a specific year", "[exact][trie][year]") {
-//     Trie trie = makeTestTrie();
-//     REQUIRE(trie.getYear("Liam", 'M', 2019) == 700);
-//     REQUIRE(trie.getYear("Liam", 'M', 2020) == 680);
-//     REQUIRE(trie.getYear("Liam", 'M', 2021) == 660);
-// }
-//
-// TEST_CASE("Trie getYear returns zero for year not in dataset", "[edge][trie][year]") {
-//     Trie trie = makeTestTrie();
-//     REQUIRE(trie.getYear("Liam", 'M', 1800) == 0);
-//     REQUIRE(trie.getYear("Liam", 'M', 2099) == 0);
-// }
-//
-// TEST_CASE("Trie getYear returns zero for year in range but name not recorded that year", "[edge][trie][year]") {
-//     Trie trie = makeTestTrie();
-//     // Emily only has 2019
-//     REQUIRE(trie.getYear("Emily", 'F', 2020) == 0);
-// }
-//
+TEST_CASE("Trie getTotal returns correct all-time sum", "[all-time][exact][trie]") {
+    Trie trie = makeTestTrie();
+    // Liam M: 700 + 680 + 660 = 2040
+    REQUIRE(trie.getTotal("Liam", 'M') == 2040);
+}
+
+TEST_CASE("Trie getTotal returns zero for name not inserted", "[exact][trie]") {
+    Trie trie = makeTestTrie();
+    REQUIRE(trie.getTotal("xyz", 'M') == 0);
+}
+
+TEST_CASE("Trie getTotal returns zero for correct name but wrong gender", "[gender][trie]") {
+    Trie trie = makeTestTrie();
+    REQUIRE(trie.getTotal("Bob", 'F') == 0);
+}
+
+TEST_CASE("Trie getTotal M and F for same name are separate", "[gender][trie]") {
+    Trie trie = makeTestTrie();
+    // Sam M = 200, Sam F = 150
+    REQUIRE(trie.getTotal("Sam", 'M') == 200);
+    REQUIRE(trie.getTotal("Sam", 'F') == 150);
+}
+
+TEST_CASE("Trie getTotal not affected by names sharing a prefix", "[exact][trie]") {
+    Trie trie = makeTestTrie();
+    // Emma and Emily share "Em" but totals must be separate
+    REQUIRE(trie.getTotal("Emma",  'F') == 1440); // 500+480+460
+    REQUIRE(trie.getTotal("Emily", 'F') == 300);
+}
+
+TEST_CASE("Trie getYear returns correct count for a specific year", "[exact][trie][year]") {
+    Trie trie = makeTestTrie();
+    REQUIRE(trie.getYear("Liam", 'M', 2019) == 700);
+    REQUIRE(trie.getYear("Liam", 'M', 2020) == 680);
+    REQUIRE(trie.getYear("Liam", 'M', 2021) == 660);
+}
+
+TEST_CASE("Trie getYear returns zero for year not in data", "[trie][year]") {
+    Trie trie = makeTestTrie();
+    REQUIRE(trie.getYear("Liam", 'M', 1800) == 0);
+    REQUIRE(trie.getYear("Liam", 'M', 2099) == 0);
+}
+
+TEST_CASE("Trie getYear returns zero for year in range but name not in that year", "[trie][year]") {
+    Trie trie = makeTestTrie();
+    // Emily only has 2019
+    REQUIRE(trie.getYear("Emily", 'F', 2020) == 0);
+}
+
