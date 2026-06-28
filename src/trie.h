@@ -10,7 +10,7 @@ class Trie {
 
     struct TrieNode {
         TrieNode* children[26] = {}; // 26 letters (A-Z)
-        bool isName = false;
+        bool isName;
 
         // fills in data only if isname true
         GenderedData data; // see parser.h

@@ -2,6 +2,7 @@
 
 // constructor for TrieNode
 Trie::TrieNode::TrieNode() {
+    isName = false;
     for (int i = 0; i < 26; i++) {
         children[i] = nullptr;
     }
@@ -34,14 +35,21 @@ int Trie::getTotal(string name, char sex) {
     return curr->data.getTotal(sex);
 }
 
-// int Trie::getYear(string name, char sex, int year) {
-//     TrieNode* curr = root;
-//     for (int i  = 0; i < name.length(); i++) {
-//         int index = tolower(name[i]) - 'a';
-//         curr = curr->children[index];
-//     }
-//     return curr->data.get(sex);
-// }
+int Trie::getYear(string name, char sex, int year) {
+    TrieNode* curr = root;
+    for (int i  = 0; i < name.length(); i++) {
+        int index = tolower(name[i]) - 'a';
+        curr = curr->children[index];
+    }
+    //This is very slow rn O(n) where n is number of years. Could def be faster if organized better
+    vector<pair<int, int>> allYears = curr->data.get(sex);
+    for (int i = 0; i < allYears.size(); i++) {
+        if (allYears[i].first == year)
+            return allYears[i].second;
+    }
+    //Returns -1 if year is not found
+    return -1;
+}
 
 // destructor for Trie
 void Trie::clear(TrieNode* curr) {
