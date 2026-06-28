@@ -15,6 +15,7 @@ class Trie {
         // fills in data only if isname true
         GenderedData data; // see parser.h
 
+        // constructor
         Node();
     };
 
@@ -28,6 +29,10 @@ public:
     int getTotal(string name, char sex);
     int getYear(string name, char sex, int year);
 
+    // needed a destructor
+    ~Trie();
+    //helper for destructor
+    void clear(Node* curr);
 };
 
 
