@@ -39,7 +39,7 @@ year out of range for that name (a lot of names/spellings are new)
 top-N where N is larger than actual results (top 20 names but there's only a few that match)
 
 relevant flag names for consistency:
-exact, prefix, year, edge, top, trie, hash, gender, format, file, range
+all-time, edge, exact, file, format, gender, hash, prefix, range, top, trie, year
 
 */
 
@@ -57,7 +57,7 @@ void insertTestData(Trie& trie, HashTable& hash) {
 }
 
 
-TEST_CASE("Exact name search returns correct all time total", "[exact][trie][hash]") {
+TEST_CASE("Exact name search returns correct all time total", "[exact][all-time][trie][hash]") {
     Trie trie;
     HashTable hash;
     insertTestData(trie, hash);
