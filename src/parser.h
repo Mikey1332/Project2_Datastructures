@@ -27,9 +27,12 @@ class GenderedData {
             etc
         }
         */
+    void insertInOrder(vector<pair<int, int>> &allYears, int year, int count);
+    int getCountHelper(vector<pair<int, int>> &allYears, int year);
     public:
     GenderedData();
     vector<pair<int,int>>& get(char gender); // see .cpp
+    int getCount(char gender, int year);
     void insert(char gender, int year, int count); // see .cpp
     int getTotal(char gender);
 };

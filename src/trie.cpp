@@ -41,14 +41,8 @@ int Trie::getYear(string name, char sex, int year) {
         int index = tolower(name[i]) - 'a';
         curr = curr->children[index];
     }
-    //This is very slow rn O(n) where n is number of years. Could def be faster if organized better
-    vector<pair<int, int>> allYears = curr->data.get(sex);
-    for (int i = 0; i < allYears.size(); i++) {
-        if (allYears[i].first == year)
-            return allYears[i].second;
-    }
+    return curr->data.getCount(sex, year);
     //Returns -1 if year is not found
-    return -1;
 }
 
 // destructor for Trie
