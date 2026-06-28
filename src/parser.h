@@ -6,10 +6,10 @@ using namespace std;
 
 
 class GenderedData {
-    int maleTotal;
-    int femaleTotal;
-    vector<pair<int,int>> M;
-    vector<pair<int,int>> F;
+    int maleTotal = 0;
+    int femaleTotal = 0;
+    vector<pair<int,int>> M = {};
+    vector<pair<int,int>> F = {};
 
     void insertInOrder(vector<pair<int, int>> &allYears, int year, int count);
     int getCountHelper(vector<pair<int, int>> &allYears, int year);
