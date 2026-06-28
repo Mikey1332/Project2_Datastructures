@@ -7,10 +7,12 @@ using namespace std;
 // functions to parse the files instead of clumping it all in main()
 // or anything that can be shared between trie and hash headers
 
-struct GenderedData {
+class GenderedData {
+    int maleTotal;
+    int femaleTotal;
     vector<pair<int,int>> M;
     vector<pair<int,int>> F;
-    // instead of using map<>, this struct does the same thing
+    // instead of using map<>, this class does the same thing
     // see previous commits if you're curious what changed
     /*
          basically like this:
@@ -25,7 +27,11 @@ struct GenderedData {
             etc
         }
         */
+    public:
+    GenderedData();
     vector<pair<int,int>>& get(char gender); // see .cpp
+    void insert(char gender, int year, int count); // see .cpp
+    int getTotal(char gender);
 };
 
 
