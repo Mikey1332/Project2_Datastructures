@@ -14,7 +14,7 @@ Trie::Trie() {
 
 void Trie::insert(string name, char sex, int year, int count) {
     TrieNode* curr = root;
-    for (int i  = 0; i < name.length(); i++) {
+    for (int i  = 0; i < int(name.length()); i++) {
         //This line can break if name has non-letter
         int index = tolower(name[i]) - 'a';
         if (curr->children[index] == nullptr)
@@ -28,7 +28,7 @@ void Trie::insert(string name, char sex, int year, int count) {
 
 int Trie::getTotal(string name, char sex) {
     TrieNode* curr = root;
-    for (int i  = 0; i < name.length(); i++) {
+    for (int i  = 0; i < int(name.length()); i++) {
         int index = tolower(name[i]) - 'a';
         curr = curr->children[index];
     }
@@ -37,7 +37,7 @@ int Trie::getTotal(string name, char sex) {
 
 int Trie::getYear(string name, char sex, int year) {
     TrieNode* curr = root;
-    for (int i  = 0; i < name.length(); i++) {
+    for (int i  = 0; i < int(name.length()); i++) {
         int index = tolower(name[i]) - 'a';
         curr = curr->children[index];
     }
