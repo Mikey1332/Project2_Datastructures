@@ -1,5 +1,5 @@
 #include "parser.h"
-#
+
 
 GenderedData::GenderedData() {
     maleTotal = 0;
@@ -86,7 +86,7 @@ void GenderedData::loadData() {
     for(int year = 1880; year < 2026; year++) {
         string year_str = to_string(year);
         ifstream file("data/names/yob" + year_str + ".txt");
-        
+
         if (!file.is_open()) {
             return; // maybe to add something else for test.cpp but for now this is fine.
         }
