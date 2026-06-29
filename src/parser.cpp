@@ -1,4 +1,5 @@
 #include "parser.h"
+#
 
 GenderedData::GenderedData() {
     maleTotal = 0;
@@ -77,4 +78,30 @@ int GenderedData::getTotal(char gender) {
         return maleTotal;
     //If gender == 'F'
     return femaleTotal;
+}
+
+// file parsing logic, would work only if exe of main.cpp is located outside of any folder since it is relative. - update if main exe is not.
+
+void GenderedData::loadData() {
+    for(int year = 1880; year < 2026; year++) {
+        string year_str = to_string(year);
+        ifstream file("data/names/yob" + year_str + ".txt");
+        
+        if (!file.is_open()) {
+            return; // maybe to add something else for test.cpp but for now this is fine.
+        }
+        string line;
+
+        while(getline(file, line)) {
+            stringstream ss(line);
+            string name;
+            string genderStr;
+            string countStr;
+            if(getline(ss, name, ',') && getline(ss, genderStr, ',') && getline(ss, countStr, ',')) {
+                char gender = genderStr[0];
+                int count = stoi(countStr);
+                insert(gender, year, count);
+            }
+        }
+    }
 }

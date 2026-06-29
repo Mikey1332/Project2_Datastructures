@@ -2,6 +2,8 @@
 #define COP3530_PROJECT_2_PARSER_H
 #include <string>
 #include <vector>
+#include <sstream>
+#include <fstream>
 using namespace std;
 
 
@@ -19,6 +21,10 @@ class GenderedData {
     int getCount(char gender, int year);
     void insert(char gender, int year, int count);
     int getTotal(char gender);
+
+    // below are file parsing functions for me - Alex
+
+    void loadData();
 };
 
 
