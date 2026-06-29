@@ -114,11 +114,11 @@ TEST_CASE("GenderedData getCount returns correct count for a year", "[genderedda
     REQUIRE(g.getCount('F', 2020) == 400);
 }
 
-TEST_CASE("GenderedData getCount returns zero for year not inserted", "[gendereddata][year]") {
+TEST_CASE("GenderedData getCount returns zero for year out of bounds", "[gendereddata][year]") {
     GenderedData g;
     g.insert('F', 2019, 300);
     REQUIRE(g.getCount('F', 1800) == 0);
-    REQUIRE(g.getCount('F', 2099) == 0);
+    REQUIRE(g.getCount('F', 2100) == 0);
 }
 
 TEST_CASE("GenderedData getCount does not cross genders", "[gender][gendereddata]") {
@@ -170,7 +170,7 @@ TEST_CASE("Trie getYear returns zero for year not in data", "[trie][year]") {
     REQUIRE(trie.getYear("Liam", 'M', 2099) == 0);
 }
 
-TEST_CASE("Trie getYear returns zero for year in range but name not in that year", "[trie][year]") {
+TEST_CASE("Trie getYear returns zero for a name without that year", "[trie][year]") {
     Trie trie = makeTestTrie();
     // Emily only has 2019
     REQUIRE(trie.getYear("Emily", 'F', 2020) == 0);
