@@ -18,14 +18,16 @@ class Trie {
 
     TrieNode* root;
 
+    int getTotalOfPrefixHelper(TrieNode* node, string name, char sex);
+
 public:
 
     Trie();
     // example starter functions below
     void insert(string name, char sex, int year, int count);
-    bool search(string name, char sex, int year); // searching to see if a specific name exists, with a correspoding year and sex
+    bool search(string name, char sex, int year); // searching to see if a specific name exists, with a corresponding year and sex
     void print(int year); // just a basic print function for maybe all names + gender in a year with their count.
-    int getTotal(string name, char sex);
+    int getTotal(string name, char sex, bool pref);
     int getYear(string name, char sex, int year);
 
     // needed a destructor

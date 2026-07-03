@@ -13,7 +13,7 @@ class HashTable {
 public:
 
     void insert(string name, char sex, int year, int count);
-    int getTotal(string name, char sex);
+    int getTotal(string name, char sex, bool pref);
     int getYear(string name, char sex, int year);
 
 };
