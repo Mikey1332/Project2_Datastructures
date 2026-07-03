@@ -26,16 +26,16 @@ void Trie::insert(string name, char sex, int year, int count) {
     curr->data.insert(sex, year, count);
 }
 
-int Trie::getTotal(string name, char sex) {
+int Trie::getAllTimeTotal(string name, char sex) {
     TrieNode* curr = root;
     for (int i  = 0; i < int(name.length()); i++) {
         int index = tolower(name[i]) - 'a';
         curr = curr->children[index];
     }
-    return curr->data.getTotal(sex);
+    return curr->data.getAllTimeTotal(sex);
 }
 
-int Trie::getYear(string name, char sex, int year) {
+int Trie::getYearTotal(string name, char sex, int year) {
     TrieNode* curr = root;
     for (int i  = 0; i < int(name.length()); i++) {
         int index = tolower(name[i]) - 'a';
