@@ -72,17 +72,17 @@ int main(){
 		}
 		else if (selection == 1) {
 			cout << "Trie: " << endl;
-			cout << trie.getTotal(name, 'M', false) + trie.getTotal(name, 'F', false) << endl;
+			cout << trie.getAllTimeTotal(name, 'M', false) + trie.getAllTimeTotal(name, 'F', false) << endl;
 
 			// cout << "Hash: " << endl;
-			// cout << hash.getTotal(name, 'M', false) + hash.getTotal(name, 'F', false) << endl;
+			// cout << hash.getAllTimeTotal(name, 'M', false) + hash.getAllTimeTotal(name, 'F', false) << endl;
 		}
 		else if (selection == 5) {
 			cout << "Trie: " << endl;
-			cout << trie.getTotal(name, 'M', true) + trie.getTotal(name, 'F', true) << endl;
+			cout << trie.getAllTimeTotal(name, 'M', true) + trie.getAllTimeTotal(name, 'F', true) << endl;
 
 			// cout << "Hash: " << endl;
-			// cout << hash.getTotal(" ", 'M', true) + hash.getTotal(" ", 'F', true) << endl;
+			// cout << hash.getAllTimeTotal(" ", 'M', true) + hash.getAllTimeTotal(" ", 'F', true) << endl;
 		}
 		else if (selection == 11)
 			running = false;
@@ -90,4 +90,3 @@ int main(){
 
 	return 0;
 }
-// test 2 - kaiden
