@@ -26,7 +26,7 @@ public:
     void insert(string name, char sex, int year, int count);
     bool search(string name, char sex, int year); // searching to see if a specific name exists, with a corresponding year and sex
     void print(int year); // just a basic print function for maybe all names + gender in a year with their count.
-    int getAllTimeTotal(string name, char sex);
+    int getAllTimeTotal(string name, char sex, bool pref);
     int getYearTotal(string name, char sex, int year);
 
     // needed a destructor
