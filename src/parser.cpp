@@ -1,16 +1,16 @@
 #include "parser.h"
 
 
-GenderedData::GenderedData() {
+GenderData::GenderData() {
     maleTotal = 0;
     femaleTotal = 0;
 }
 
-vector<pair<int, int> > &GenderedData::get(char gender) {
+vector<pair<int, int> > &GenderData::get(char gender) {
     return gender == 'M' ? M : F; // getter function
 }
 
-int GenderedData::getCount(char gender, int year) {
+int GenderData::getCount(char gender, int year) {
     //Binary Search - O(log(n)) where n is number of years
     if (gender == 'M')
         return getCountHelper(M, year);
@@ -18,7 +18,7 @@ int GenderedData::getCount(char gender, int year) {
     return getCountHelper(F, year);
 }
 
-int GenderedData::getCountHelper(vector<pair<int, int>> &allYears, int year) {
+int GenderData::getCountHelper(vector<pair<int, int>> &allYears, int year) {
     //Binary Search - O(log(n)) where n is number of years
     int first = 0;
     int last = allYears.size()-1;
@@ -40,7 +40,7 @@ int GenderedData::getCountHelper(vector<pair<int, int>> &allYears, int year) {
 }
 
 
-void GenderedData::insert(char gender, int year, int count) {
+void GenderData::insert(char gender, int year, int count) {
     //O(n)
     if (gender == 'M') {
         maleTotal += count;
@@ -53,7 +53,7 @@ void GenderedData::insert(char gender, int year, int count) {
     }
 }
 
-void GenderedData::insertInOrder(vector<pair<int, int>> &allYears, int year, int count) {
+void GenderData::insertInOrder(vector<pair<int, int>> &allYears, int year, int count) {
     int first = 0;
     int last = allYears.size()-1;
     while (first <= last) {
@@ -73,7 +73,7 @@ void GenderedData::insertInOrder(vector<pair<int, int>> &allYears, int year, int
     allYears.insert(allYears.begin() + first, {year, count});
 }
 
-int GenderedData::getTotal(char gender) {
+int GenderData::getAllTimeTotal(char gender) {
     if (gender == 'M')
         return maleTotal;
     //If gender == 'F'
@@ -82,7 +82,7 @@ int GenderedData::getTotal(char gender) {
 
 // file parsing logic, would work only if exe of main.cpp is located outside of any folder since it is relative. - update if main exe is not.
 
-void GenderedData::loadData() {
+void GenderData::loadData() {
     for(int year = 1880; year < 2026; year++) {
         string year_str = to_string(year);
         ifstream file("data/names/yob" + year_str + ".txt");
