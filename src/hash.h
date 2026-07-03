@@ -7,7 +7,7 @@ class HashTable {
 
     struct Entry {
         string name;
-        GenderedData data;
+        GenderData data;
     };
 
 public:

@@ -10,7 +10,7 @@ class Trie {
         TrieNode* children[26] = {};
         bool isName;
 
-        GenderedData data;
+        GenderData data;
 
         // constructor
         TrieNode();

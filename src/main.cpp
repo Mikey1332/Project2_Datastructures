@@ -35,26 +35,34 @@ int main(){
 		getline(cin, line);
 		line += " ";
 
-		// while (!line.empty()) {
-		// 	arguments.push_back(line.substr(0, line.find(" ")));
-		// 	line = line.substr(line.find(" ")+1);
-		// }
-
-		selectionString = line.substr(0, line.find(" "));
-		line = line.substr(line.find(" ")+1);
-
-		//For name
-		if (line[0]=='"') {
-			line = line.substr(1, line.size());
-			name = line.substr(0, line.find('"'));
-			line = line.substr(line.find('"')+2);
+		while (!line.empty()) {
+			//If argument is a quote, include entire quote (don't stop at space)
+			if (line.find('"') < line.find(' ')) {
+				line = line.substr(line.find('"')+1);
+				arguments.push_back(line.substr(0, line.find('"')));
+				line = line.substr(line.find('"')+2);
+			}
+			else {
+				arguments.push_back(line.substr(0, line.find(' ')));
+				line = line.substr(line.find(' ')+1);
+			}
 		}
-
+		//Selection to integer
 		try {
-			selection = stoi(selectionString);
+			selection = stoi(arguments[0]);
 		}
 		catch (exception& e) {
 			cout << "Please enter a valid number" << endl;
+		}
+
+		//Year to integer
+		if (arguments.size() >= 3) {
+			try {
+				selection = stoi(arguments[2]);
+			}
+			catch (exception& e) {
+				cout << "Please enter a valid year" << endl;
+			}
 		}
 
 		//Selections:

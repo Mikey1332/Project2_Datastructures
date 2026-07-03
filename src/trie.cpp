@@ -35,7 +35,7 @@ int Trie::getTotal(string name, char sex, bool pref) {
     //If it is not for a prefix, return total for exact name
     if (pref == false) {
         if (curr->isName)
-            return curr->data.getTotal(sex);
+            return curr->data.getAllTimeTotal(sex);
         return 0;
     }
     //If it is a prefix
@@ -48,7 +48,7 @@ int Trie::getTotalOfPrefixHelper(TrieNode* node, string name, char sex) {
         return 0;
     int total = 0;
     if (node->isName)
-        total+=node->data.getTotal(sex);
+        total+=node->data.getAllTimeTotal(sex);
     for (TrieNode* child : node->children)
         total += getTotalOfPrefixHelper(child, name, sex);
     return total;
