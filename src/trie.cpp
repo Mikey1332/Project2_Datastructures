@@ -26,13 +26,32 @@ void Trie::insert(string name, char sex, int year, int count) {
     curr->data.insert(sex, year, count);
 }
 
-int Trie::getAllTimeTotal(string name, char sex) {
+int Trie::getAllTimeTotal(string name, char sex, bool pref) {
     TrieNode* curr = root;
     for (int i  = 0; i < int(name.length()); i++) {
         int index = tolower(name[i]) - 'a';
         curr = curr->children[index];
     }
-    return curr->data.getAllTimeTotal(sex);
+    //If it is not for a prefix, return total for exact name
+    if (pref == false) {
+        if (curr->isName)
+            return curr->data.getAllTimeTotal(sex);
+        return 0;
+    }
+    //If it is a prefix
+    return getTotalOfPrefixHelper(curr, name, sex);
+}
+
+int Trie::getTotalOfPrefixHelper(TrieNode* node, string name, char sex) {
+    //This goes through each letter for each node, even if it's not a child
+    if (node == nullptr)
+        return 0;
+    int total = 0;
+    if (node->isName)
+        total+=node->data.getAllTimeTotal(sex);
+    for (TrieNode* child : node->children)
+        total += getTotalOfPrefixHelper(child, name, sex);
+    return total;
 }
 
 int Trie::getYearTotal(string name, char sex, int year) {
