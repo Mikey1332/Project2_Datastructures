@@ -30,6 +30,7 @@ exact name lookup (one year)
 prefixes:
 prefix returns correctly
 single-character prefix
+if prefix is longer than the name
 
 year handling:
 year range (2019-2021) sum of years
@@ -63,6 +64,8 @@ Trie makeTestTrie() {
     trie.insert("Bob",      'M', 2020, 580);
     trie.insert("Sam",      'M', 2019, 200);
     trie.insert("Sam",      'F', 2019, 150);
+    trie.insert("Samuel",   'M', 2000, 950);
+    trie.insert("Samantha", 'F', 2019, 700);
     trie.insert("Emma",     'F', 2019, 500);
     trie.insert("Emma",     'F', 2020, 480);
     trie.insert("Emma",     'F', 2021, 460);
@@ -83,6 +86,8 @@ HashTable makeTestHash() {
     hash.insert("Bob",      'M', 2020, 580);
     hash.insert("Sam",      'M', 2019, 200);
     hash.insert("Sam",      'F', 2019, 150);
+    hash.insert("Samuel",   'M', 2000, 950);
+    hash.insert("Samantha", 'F', 2019, 700);
     hash.insert("Emma",     'F', 2019, 500);
     hash.insert("Emma",     'F', 2020, 480);
     hash.insert("Emma",     'F', 2021, 460);
@@ -134,40 +139,35 @@ TEST_CASE("GenderData getCount does not cross genders", "[gender][GenderData]") 
     REQUIRE(g.getCount('F', 2019) == 100);
 }
 
-TEST_CASE("Empty trie does not crash on initialization", "[trie]") {
-    Trie trie;
-    REQUIRE(true); // Test did not crash
-}
-
 TEST_CASE("Trie insertion does not crash", "[trie]") {
     Trie trie = makeTestTrie();
     REQUIRE(true); // Test did not crash
 }
 
-TEST_CASE("Trie getAllTimeTotal returns correct all-time sum", "[all-time][exact][trie]") {
+TEST_CASE("Trie getAllTimeTotal returns correct all-time sum for exact name search", "[all-time][exact][trie]") {
     Trie trie = makeTestTrie();
     // Liam M: 700 + 680 + 660 = 2040
     REQUIRE(trie.getAllTimeTotal("Liam", 'M', false) == 2040);
 }
 
-TEST_CASE("Trie getAllTimeTotal returns 0 for name not inserted", "[all-time][exact][trie][BROKEN]") {
+TEST_CASE("Trie getAllTimeTotal for name not inserted for exact name search", "[all-time][exact][trie][BROKEN]") {
     Trie trie = makeTestTrie();
     REQUIRE(trie.getAllTimeTotal("xyz", 'M', false) == 0);
 }
 
-TEST_CASE("Trie getAllTimeTotal returns 0 for correct name but wrong gender", "[all-time][gender][trie]") {
+TEST_CASE("Trie getAllTimeTotal for correct name but wrong gender for exact search", "[all-time][exact][gender][trie][BROKEN]") {
     Trie trie = makeTestTrie();
     REQUIRE(trie.getAllTimeTotal("Bob", 'F', false) == 0);
 }
 
-TEST_CASE("Trie getAllTimeTotal M and F for same name are separate", "[all-time][gender][trie]") {
+TEST_CASE("Trie getAllTimeTotal M and F for same name are separate for exact name search", "[all-time][exact][gender][trie]") {
     Trie trie = makeTestTrie();
     // Sam M = 200, Sam F = 150
     REQUIRE(trie.getAllTimeTotal("Sam", 'M', false) == 200);
     REQUIRE(trie.getAllTimeTotal("Sam", 'F', false) == 150);
 }
 
-TEST_CASE("Trie getAllTimeTotal not affected by names sharing a prefix", "[all-time][exact][trie]") {
+TEST_CASE("Trie getAllTimeTotal exact searches not affected by names sharing a prefix", "[all-time][exact][trie]") {
     Trie trie = makeTestTrie();
     // Emma and Emily share "Em" but totals must be separate
     REQUIRE(trie.getAllTimeTotal("Emma",  'F', false) == 1440); // 500+480+460
@@ -193,11 +193,6 @@ TEST_CASE("Trie getYearTotal returns -1 for a name without that year", "[getYear
     REQUIRE(trie.getYearTotal("Emily", 'F', 2020) == -1);
 }
 
-TEST_CASE("Empty hash does not crash on initialization", "[hash]") {
-    HashTable hash;
-    REQUIRE(true); // Test did not crash
-}
-
 TEST_CASE("Hash function hashes correctly", "[hash][BROKEN]") {
     HashTable hash;
 
@@ -208,7 +203,7 @@ TEST_CASE("Hash function hashes correctly", "[hash][BROKEN]") {
     string name5 = "Verylongname";
     string name6 = "Zzzzzzzzzzzz"; // should be large number before getting mod
 
-    REQUIRE(hash.hash(name6) == 0); // should be false for now until i make better hash
+    REQUIRE(hash.hash(name6) == 0); // should be FALSE for now until i make better hash
     REQUIRE(hash.hash(name2) == 0);
     REQUIRE(hash.hash(name3) == 0);
     REQUIRE(hash.hash(name4) == 0);
@@ -223,7 +218,7 @@ TEST_CASE("Insert one line into hash table", "[hash]") {
     int year = 2020;
     int count = 500;
 
-    REQUIRE(hash.getFilledSlots() == 0); // Not inserted yet
+    REQUIRE(hash.getFilledSlots() == 0); // Not inserted yet = 0
 
     hash.insert(name, sex, year, count);
 
@@ -231,30 +226,43 @@ TEST_CASE("Insert one line into hash table", "[hash]") {
     REQUIRE(hash.getAllTimeTotal(name,sex,false) == 500);
 }
 
-TEST_CASE("Hash getAllTimeTotal returns correct all-time sum", "[all-time][exact][hash]") {
+TEST_CASE("Hash filledSlots matches manually calculated occupied slots","[hash]") {
+    HashTable hash = makeTestHash();
+    int occupied = 0;
+    for (int i = 0; i < hash.getCapacity(); i++) {
+        if (hash.getOccupied(i)) {
+            occupied++;
+        }
+    }
+    // Warning: this will fail if the test hash tree is modified
+    REQUIRE(hash.getFilledSlots() == 8);
+    REQUIRE(occupied == 8);
+}
+
+TEST_CASE("Hash getAllTimeTotal returns correct all-time sum for exact name search", "[all-time][exact][hash]") {
     HashTable hash = makeTestHash();
     // Liam M: 700 + 680 + 660 = 2040
     REQUIRE(hash.getAllTimeTotal("Liam", 'M', false) == 2040);
 }
 
-TEST_CASE("Hash getAllTimeTotal returns 0 for name not inserted", "[all-time][exact][hash][BROKEN]") {
+TEST_CASE("Hash getAllTimeTotal for name not inserted for exact name search", "[all-time][exact][hash]") {
     HashTable hash = makeTestHash();
     REQUIRE(hash.getAllTimeTotal("xyz", 'M', false) == 0);
 }
 
-TEST_CASE("Hash getAllTimeTotal returns 0 for correct name but wrong gender", "[all-time][gender][hash]") {
+TEST_CASE("Hash getAllTimeTotal for correct name but wrong gender for exact search", "[all-time][exact][gender][hash]") {
     HashTable hash = makeTestHash();
     REQUIRE(hash.getAllTimeTotal("Bob", 'F', false) == 0);
 }
 
-TEST_CASE("Hash getAllTimeTotal M and F for same name are separate", "[all-time][gender][hash]") {
+TEST_CASE("Hash getAllTimeTotal M and F for same name are separate for exact name search", "[all-time][exact][gender][hash]") {
     HashTable hash = makeTestHash();
-    // Sam M = 200, Sam F = 150
+    // Sam M = 200, Sam F = 150, ignores Samuel and Samantha
     REQUIRE(hash.getAllTimeTotal("Sam", 'M', false) == 200);
     REQUIRE(hash.getAllTimeTotal("Sam", 'F', false) == 150);
 }
 
-TEST_CASE("Hash getAllTimeTotal not affected by names sharing a prefix", "[all-time][exact][hash]") {
+TEST_CASE("Hash getAllTimeTotal exact searches not affected by names sharing a prefix", "[all-time][exact][hash]") {
     HashTable hash = makeTestHash();
     // Emma and Emily share "Em" but totals must be separate
     REQUIRE(hash.getAllTimeTotal("Emma",  'F', false) == 1440); // 500+480+460
@@ -278,4 +286,25 @@ TEST_CASE("Hash getYearTotal returns -1 for a name without that year", "[getYear
     HashTable hash = makeTestHash();
     // Emily only has 2019
     REQUIRE(hash.getYearTotal("Emily", 'F', 2020) == -1);
+}
+
+TEST_CASE("Hash getAllTimeTotal returns correct all-time sum for prefix search", "[all-time][hash][prefix]") {
+    HashTable hash = makeTestHash();
+    // Emma F: 500+480+460
+    // Emily F: 300
+    // Total "Em" = 1740
+    REQUIRE(hash.getAllTimeTotal("Em", 'F', true) == 1740);
+}
+
+TEST_CASE("Hash getAllTimeTotal for name not inserted for prefix search", "[all-time][hash][prefix]") {
+    HashTable hash = makeTestHash();
+    REQUIRE(hash.getAllTimeTotal("xyz", 'M', true) == 0);
+}
+
+TEST_CASE("Hash getAllTimeTotal M and F for same name are separate for prefix search", "[all-time][gender][hash][prefix]") {
+    HashTable hash = makeTestHash();
+    // M : Sam + Samuel = 200+950
+    // F : Sam + Samantha = 150+700
+    REQUIRE(hash.getAllTimeTotal("Sam", 'M', true) == 1150);
+    REQUIRE(hash.getAllTimeTotal("Sam", 'F', true) == 850);
 }

@@ -2,37 +2,52 @@
 #include "parser.h"
 using namespace std;
 
-int HashTable::hash(string name) {
+int HashTable::getFilledSlots() {
+    return filledSlots;
+}
+
+int HashTable::getCapacity() {
+    return capacity;
+}
+
+bool HashTable::getOccupied(int index) {
+    return buckets[index].occupied;
+}
+
+int HashTable::hash(string name) { // this sucks but temporary
     long long index = 0; // overflow fix?
     for (char c : name) {
-        index += (long long)(tolower(c) - 'a') * (long long)name.length(); // same type
+        index += (long long)(tolower(c) - 'a') * (long long)name.length();
     }
-    return (int)index; // idk how well this works
+    return (int)index;
 }
 
 void HashTable::insert(string name, char sex, int year, int count) {
     int index = hash(name);
 
     for (int i = 0; i < capacity; i++) {
+        // Quadratic probing
+        int probe = (index + i * i) % capacity;
 
-        int probe = (index + i * i) % capacity; // quadratic probing
+        // If unoccupied
+        if (!buckets[probe].occupied) {
 
-        if (!buckets[probe].occupied) { // if unoccupied create new slot
-            buckets[probe].name = name; // update name
-            buckets[probe].data.insert(sex, year, count); // GenderData insert function
-
-            buckets[probe].occupied = true; // update to occupied
-            filledSlots++; // increase for new slot
+            buckets[probe].name = name;
+            buckets[probe].data.insert(sex, year, count);
+            buckets[probe].occupied = true;
+            filledSlots++;
             return;
         }
-        if (buckets[probe].name == name) { // update existing data
-            buckets[probe].data.insert(sex, year, count); // GenderData insert function
+        // If name found
+        if (buckets[probe].name == name) {
+            // Update data
+            buckets[probe].data.insert(sex, year, count);
             return;
         }
     }
 }
 
-GenderData* HashTable::getData(string name) { // helper for future functions
+GenderData* HashTable::getData(string name) {
     int index = hash(name);
     for (int i = 0; i < capacity; i++) {
         int probe = (index + i * i) % capacity;
@@ -44,24 +59,57 @@ GenderData* HashTable::getData(string name) { // helper for future functions
     return nullptr;
 }
 
-int HashTable::getFilledSlots() {
-    return filledSlots;
-}
-
+// Find the all-time total occurrences per sex, either searching by exact name or by a prefix
 int HashTable::getAllTimeTotal(string name, char sex, bool pref) {
+
     if (pref) {
-        // search prefix
-        return 0; // fix later
+        string prefix = name;
+        int total = 0;
+
+        for (int i = 0; i < capacity; i++) {
+
+            // Skip if unoccupied
+            if (!buckets[i].occupied) {
+                continue;
+            }
+            // Skip if name < prefix
+            if ((int)buckets[i].name.length() < (int)prefix.length()) {
+                continue;
+            }
+
+            bool matches = true;
+            for (int j = 0; j < (int)prefix.length(); j++) {
+                if (buckets[i].name[j] != prefix[j]) {
+                    matches = false;
+                    break; // Stop checking this name
+                }
+            }
+
+            if (!matches) {
+                continue;
+                // Skip to next buckets[i]
+            }
+
+            GenderData* data = getData(buckets[i].name);
+            total += data->getAllTimeTotal(sex);
+        }
+
+        return total;
     }
+    // Else "name" is the exact name to search
     GenderData* data = getData(name);
+    if (!data) {
+        return 0;
+    }
     return data->getAllTimeTotal(sex);
 }
 
 int HashTable::getYearTotal(string name, char sex, int year) {
     GenderData* data = getData(name);
-    if (data) { // If found
-        return data->getCount(sex,year);
-    }
-    // If not found return -1
-    return -1;
+    // if (data) { // If found
+    //     return data->getCount(sex,year);
+    // }
+    // // If not found
+    // return 0;
+    return data->getCount(sex,year);
 }

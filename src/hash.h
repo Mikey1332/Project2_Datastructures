@@ -14,10 +14,11 @@ class HashTable {
         Slot() : occupied(false) {}
     };
 
-    int base; // prime
+    int base;
     int filledSlots;
-    int capacity; // i expect just over 100k names
-    vector<Slot> buckets; // so I'll aim for about 0.5 load
+    int capacity;
+    vector<Slot> buckets;
+    // Expected ~100k names, target load factor ~0.5
 
     GenderData* getData(string name);
 
@@ -27,9 +28,13 @@ public:
         buckets.resize(capacity);
     }
 
-    int hash(string name); // prefer private but need public for testing
-    void insert(string name, char sex, int year, int count);
+    // Getters
     int getFilledSlots();
+    int getCapacity();
+    bool getOccupied(int index);
+
+    int hash(string name);
+    void insert(string name, char sex, int year, int count);
     int getAllTimeTotal(string name, char sex, bool pref);
     int getYearTotal(string name, char sex, int year);
 
