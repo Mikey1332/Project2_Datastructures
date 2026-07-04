@@ -6,7 +6,12 @@
 
 /*
 
-https://github.com/catchorg/Catch2/blob/devel/docs/command-line.md#specifying-which-tests-to-run
+    https://github.com/catchorg/Catch2/blob/devel/docs/command-line.md#specifying-which-tests-to-run
+
+    relevant flag names for consistency:
+    all-time, exact, file, format, gender, GenderData, hash, insert, prefix, range, top, trie, year
+    [BROKEN] if doesn't work (to ignore test when running and fix later)
+
 
 trying to think of things to test: (feel free to add some)
 
@@ -38,16 +43,11 @@ multiple files load without interfering with each other
 total occurrences throughout years accumulates correctly
 after all files loaded, total records inserted into trie and hash should be equal
 
-edge cases:
+some edge cases:
 name not found
 year out of SSA range (1880 - 2025?)
 year out of range for that name (a lot of names/spellings are new)
 top-N where N is larger than actual results (top 20 names but there's only a few that match)
-
-relevant flag names for consistency:
-all-time, exact, file, format, gender, GenderData, hash, insert, prefix, range, top, trie, year
-[BROKEN] if doesn't work (to ignore test when running and fix later)
-
 */
 
 
