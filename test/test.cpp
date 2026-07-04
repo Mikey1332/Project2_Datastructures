@@ -134,8 +134,13 @@ TEST_CASE("GenderData getCount does not cross genders", "[gender][GenderData]") 
     REQUIRE(g.getCount('F', 2019) == 100);
 }
 
-TEST_CASE("Trie does not crash on initialization", "[trie]") {
+TEST_CASE("Empty trie does not crash on initialization", "[trie]") {
     Trie trie;
+    REQUIRE(true); // Test did not crash
+}
+
+TEST_CASE("Trie insertion does not crash", "[trie]") {
+    Trie trie = makeTestTrie();
     REQUIRE(true); // Test did not crash
 }
 
@@ -188,8 +193,13 @@ TEST_CASE("Trie getYearTotal returns 0 for a name without that year", "[trie][ye
     REQUIRE(trie.getYearTotal("Emily", 'F', 2020) == 0);
 }
 
-TEST_CASE("Hash does not crash on initialization", "[hash]") {
+TEST_CASE("Empty hash does not crash on initialization", "[hash]") {
     HashTable hash;
+    REQUIRE(true); // Test did not crash
+}
+
+TEST_CASE("Hash insertion does not crash", "[hash]") {
+    HashTable hash = makeTestHash();
     REQUIRE(true); // Test did not crash
 }
 
@@ -256,13 +266,13 @@ TEST_CASE("Hash function hashes correctly", "[hash]") {
 //     REQUIRE(hash.getAllTimeTotal("Emily", 'F') == 300);
 // }
 
-TEST_CASE("Hash getYearTotal returns correct count for a specific year", "[exact][hash][year]") {
-    HashTable hash = makeTestHash();
-    // REQUIRE(hash.getYearTotal("Liam", 'M', 2019) == 700);
-    // REQUIRE(hash.getYearTotal("Liam", 'M', 2020) == 680);
-    // REQUIRE(hash.getYearTotal("Liam", 'M', 2021) == 660);
-    REQUIRE(true);
-}
+// TEST_CASE("Hash getYearTotal returns correct count for a specific year", "[exact][hash][year]") {
+//     HashTable hash = makeTestHash();
+//     // REQUIRE(hash.getYearTotal("Liam", 'M', 2019) == 700);
+//     // REQUIRE(hash.getYearTotal("Liam", 'M', 2020) == 680);
+//     // REQUIRE(hash.getYearTotal("Liam", 'M', 2021) == 660);
+//     REQUIRE(true);
+// }
 
 // TEST_CASE("Hash getYearTotal returns zero for year not in data", "[hash][year]") {
 //     HashTable hash = makeTestHash();

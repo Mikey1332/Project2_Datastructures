@@ -26,8 +26,8 @@ public:
     HashTable() : base(31), filledSlots(0), capacity(200003) {}
     int hash(string name); // prefer private but need public for testing
     void insert(string name, char sex, int year, int count);
-    int getYearTotal(string name, char sex, int year);
-    int getAllTimeTotal(string name, char sex, bool pref);
+    // int getYearTotal(string name, char sex, int year);
+    // int getAllTimeTotal(string name, char sex, bool pref);
 };
 
 #endif //COP3530_PROJECT_2_HASH_H

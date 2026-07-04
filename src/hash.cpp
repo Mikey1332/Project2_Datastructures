@@ -44,13 +44,13 @@ GenderData* HashTable::getData(string name) { // helper for future functions
     return nullptr;
 }
 
-int HashTable::getYearTotal(string name, char sex, int year) {
-    GenderData* data = getData(name);
-    if (data) { // if found
-        // return total for that year/sex
-        return 0; // fix
-        // i finish tomorrow
-    }
-    // if not found return -1
-    return -1;
-}
+// int HashTable::getYearTotal(string name, char sex, int year) {
+//     GenderData* data = getData(name);
+//     if (data) { // if found
+//         // return total for that year/sex
+//         return 0; // fix
+//         // i finish tomorrow
+//     }
+//     // if not found return -1
+//     return -1;
+// }
