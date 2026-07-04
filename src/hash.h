@@ -6,24 +6,24 @@ using namespace std;
 
 class HashTable {
 
-    struct Entry {
+    struct Slot {
         string name;
         GenderData data;
         bool occupied;
 
-        Entry() : occupied(false) {}
+        Slot() : occupied(false) {}
     };
 
-    int base = 31; // prime
-    int capacity = 200003; // i expect just over 100k names
-    Entry* table[200003]; // so I'll aim for about 0.5 load
-    int numEntries;
+    int base; // prime
+    int filledSlots;
+    int capacity; // i expect just over 100k names
+    vector<Slot> buckets; // so I'll aim for about 0.5 load
 
     GenderData* getData(string name);
 
 public:
 
-    HashTable() : numEntries(0) {}
+    HashTable() : base(31), filledSlots(0), capacity(200003) {}
     int hash(string name); // prefer private but need public for testing
     void insert(string name, char sex, int year, int count);
     int getYearTotal(string name, char sex, int year);

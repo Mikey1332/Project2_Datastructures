@@ -3,11 +3,11 @@
 using namespace std;
 
 int HashTable::hash(string name) {
-    int index = 0;
-
-    // gotta come up with a good hash that risks fewer collisions
-
-    return index % capacity;
+    long long index = 0; // overflow fix?
+    for (char c : name) {
+        index += (long long)(tolower(c) - 'a') * (long long)name.length(); // same type
+    }
+    return (int)index; // idk how well this works
 }
 
 void HashTable::insert(string name, char sex, int year, int count) {
@@ -17,17 +17,16 @@ void HashTable::insert(string name, char sex, int year, int count) {
 
         int probe = (index + i * i) % capacity; // quadratic probing
 
-        if (!table[probe]->occupied) { // if unoccupied create new slot
-            table[probe]->name = name; // update name
-            table[probe]->data.insert(sex, year, count); // GenderData insert function
+        if (!buckets[probe].occupied) { // if unoccupied create new slot
+            buckets[probe].name = name; // update name
+            buckets[probe].data.insert(sex, year, count); // GenderData insert function
 
-            table[probe]->occupied = true; // update to occupied
-            numEntries++;
+            buckets[probe].occupied = true; // update to occupied
+            filledSlots++; // increase for new slot
             return;
         }
-        if (table[probe]->name == name) { // update existing data
-            table[probe]->data.insert(sex, year, count); // GenderData insert function
-            numEntries++;
+        if (buckets[probe].name == name) { // update existing data
+            buckets[probe].data.insert(sex, year, count); // GenderData insert function
             return;
         }
     }
@@ -37,10 +36,10 @@ GenderData* HashTable::getData(string name) { // helper for future functions
     int index = hash(name);
     for (int i = 0; i < capacity; i++) {
         int probe = (index + i * i) % capacity;
-        if (!table[probe]->occupied)
+        if (!buckets[probe].occupied)
             return nullptr;
-        if (table[probe]->name == name)
-            return &table[probe]->data;
+        if (buckets[probe].name == name)
+            return &buckets[probe].data;
     }
     return nullptr;
 }
