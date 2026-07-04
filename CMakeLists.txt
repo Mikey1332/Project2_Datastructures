@@ -38,7 +38,6 @@ add_executable(Tests
         src/hash.h
         src/parser.cpp
         src/parser.h
-        # ^ These files weren't added automatically, kept causing linker errors
         )
         
 target_link_libraries(Tests PRIVATE Catch2::Catch2WithMain) #link catch to test.cpp file
