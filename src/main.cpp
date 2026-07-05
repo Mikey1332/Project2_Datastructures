@@ -5,7 +5,7 @@ using namespace std;
 
 int main(){
 	Trie trie;
-	// HashTable hash;
+	HashTable hash;
 	string line, name, selectionString;
 	bool running = true;
 	int selection = -1;
@@ -74,15 +74,39 @@ int main(){
 			cout << "Trie: " << endl;
 			cout << trie.getAllTimeTotal(name, 'M', false) + trie.getAllTimeTotal(name, 'F', false) << endl;
 
-			// cout << "Hash: " << endl;
-			// cout << hash.getAllTimeTotal(name, 'M', false) + hash.getAllTimeTotal(name, 'F', false) << endl;
+			cout << "Hash: " << endl;
+			cout << hash.getAllTimeTotal(name, 'M', false) + hash.getAllTimeTotal(name, 'F', false) << endl;
+		}
+		else if (selection == 2) {
+
+		}
+		else if (selection == 3) {
+
+		}
+		else if (selection == 4) {
+
 		}
 		else if (selection == 5) {
 			cout << "Trie: " << endl;
 			cout << trie.getAllTimeTotal(name, 'M', true) + trie.getAllTimeTotal(name, 'F', true) << endl;
 
-			// cout << "Hash: " << endl;
-			// cout << hash.getAllTimeTotal(" ", 'M', true) + hash.getAllTimeTotal(" ", 'F', true) << endl;
+			cout << "Hash: " << endl;
+			cout << hash.getAllTimeTotal(" ", 'M', true) + hash.getAllTimeTotal(" ", 'F', true) << endl;
+		}
+		else if (selection == 6) {
+
+		}
+		else if (selection == 7) {
+
+		}
+		else if (selection == 8) {
+
+		}
+		else if (selection == 9) {
+
+		}
+		else if (selection == 10) {
+
 		}
 		else if (selection == 11)
 			running = false;
