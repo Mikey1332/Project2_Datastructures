@@ -62,8 +62,13 @@ int main(){
 		if (selection == 2 || selection == 6 || selection == 9) {
 			while (year == -1) {
 				line.clear();
-				cout << "Please enter the year: ";
+				cout << "Please enter the year";
+				if (selection == 9)
+					cout << " or \"N\" to skip";
+				cout << ": " << endl;
 				getline(cin, line);
+				if (line == "N")
+					break;
 				try {
 					year = stoi(line);
 				}
@@ -109,6 +114,9 @@ int main(){
 				}
 				else
 					sex = toupper(line[0]);
+				if (sex != 'A' && sex != 'M' && sex != 'F' && sex != 'N') {
+					cout << "Please enter one of these letter (A/M/F/N)." << endl;
+				}
 			}
 
 			//N Selection
@@ -129,25 +137,29 @@ int main(){
 			}
 		}
 
+		cout << endl;
+
 		if (selection == 1) {
-			cout << "You chose total births of \"" << name << "\" for all time" << endl;
+			cout << "You chose total births of \"" << name << "\" for all time." << endl;
 			cout << "Trie: " << endl;
-			cout << trie.getAllTimeTotal(name, 'M', false) + trie.getAllTimeTotal(name, 'F', false) << endl;
+			cout << "There are [" <<
+			trie.getAllTimeTotal(name, 'M', false) + trie.getAllTimeTotal(name, 'F', false) <<
+			"] births for \"" << name << "\" for all time." << endl;
 
 			// cout << "Hash: " << endl;
 			// cout << hash.getAllTimeTotal(name, 'M', false) + hash.getAllTimeTotal(name, 'F', false) << endl;
 		}
 		else if (selection == 2) {
-			cout << "You chose total births of \"" << name << "\" in " << year << endl;
+			cout << "You chose total births of \"" << name << "\" in " << year << "." << endl;
 		}
 		else if (selection == 3) {
-			cout << "You chose total births of \"" << name << "\" from " << year << " to " << year2 << endl;
+			cout << "You chose total births of \"" << name << "\" from " << year << " to " << year2 << "." << endl;
 		}
 		else if (selection == 4) {
-			cout << "You chose the year-by-year trend of \"" << name << "\"" << endl;
+			cout << "You chose the year-by-year trend of \"" << name << "\"." << endl;
 		}
 		else if (selection == 5) {
-			cout << "You chose total births of prefix \"" << name << "-\" for all time" << endl;
+			cout << "You chose total births of prefix \"" << name << "-\" for all time." << endl;
 			cout << "Trie: " << endl;
 			cout << trie.getAllTimeTotal(name, 'M', true) + trie.getAllTimeTotal(name, 'F', true) << endl;
 
@@ -155,13 +167,13 @@ int main(){
 			// cout << hash.getAllTimeTotal(" ", 'M', true) + hash.getAllTimeTotal(" ", 'F', true) << endl;
 		}
 		else if (selection == 6) {
-			cout << "You chose total births of prefix \"" << name << "-\" in " << year << endl;
+			cout << "You chose total births of prefix \"" << name << "-\" in " << year << "." << endl;
 		}
 		else if (selection == 7) {
-			cout << "You chose total births of prefix \"" << name << "-\" from " << year << " to " << year2 << endl;
+			cout << "You chose total births of prefix \"" << name << "-\" from " << year << " to " << year2 << "." << endl;
 		}
 		else if (selection == 8) {
-			cout << "You chose the year-by-year trend of prefix \"" << name << "-\"" << endl;
+			cout << "You chose the year-by-year trend of prefix \"" << name << "-\"." << endl;
 		}
 		else if (selection == 9) {
 			cout << "You chose the top " << N << " names for prefix \"" << name << "-\"";
@@ -169,10 +181,10 @@ int main(){
 				cout << " (" << sex << ")";
 			if (year != -1)
 				cout << " in " << year;
-			cout << endl;
+			cout << "." << endl;
 		}
 		else if (selection == 10) {
-			cout << "You chose to run a performance benchmark" << endl;
+			cout << "You chose to run a performance benchmark." << endl;
 		}
 		else {//if (selection == 11)
 			cout << "Quitting..." << endl;
