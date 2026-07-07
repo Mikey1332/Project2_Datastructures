@@ -27,10 +27,14 @@ void Trie::insert(string name, char sex, int year, int count) {
 }
 
 int Trie::getAllTimeTotal(string name, char sex, bool pref) {
+    if (root == nullptr)
+        return 0;
     TrieNode* curr = root;
     for (int i  = 0; i < int(name.length()); i++) {
         int index = tolower(name[i]) - 'a';
         curr = curr->children[index];
+        if (curr == nullptr)
+            return 0;
     }
     //If it is not for a prefix, return total for exact name
     if (pref == false) {
