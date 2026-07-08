@@ -14,8 +14,10 @@ int GenderData::getCount(char gender, int year) {
     //Binary Search - O(log(n)) where n is number of years
     if (gender == 'M')
         return getCountHelper(M, year);
-    //If gender == 'F'
-    return getCountHelper(F, year);
+    if (gender == 'F')
+        return getCountHelper(F, year);
+    //If gender == 'A'
+    return getCountHelper(M, year) + getCountHelper(F, year);
 }
 
 int GenderData::getCountHelper(vector<pair<int, int>> &allYears, int year) {
@@ -76,8 +78,10 @@ void GenderData::insertInOrder(vector<pair<int, int>> &allYears, int year, int c
 int GenderData::getAllTimeTotal(char gender) {
     if (gender == 'M')
         return maleTotal;
-    //If gender == 'F'
-    return femaleTotal;
+    if (gender == 'F')
+        return femaleTotal;
+    //If gender == 'A'
+    return maleTotal + femaleTotal;
 }
 
 // file parsing logic, would work only if exe of main.cpp is located outside of any folder since it is relative. - update if main exe is not.
