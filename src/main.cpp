@@ -3,6 +3,22 @@
 #include "hash.h"
 using namespace std;
 
+void printMenu() {
+	cout << "=== Baby Name Search ===\n"
+		"0. Reprint Menu\n"
+		"1. Name - total births (all-time)\n" //name, sex
+		"2. Name - births in a specific year\n" //name, year, sex
+		"3. Name - births across a year range\n" //name year1, year2, sex
+		"4. Name - year-by-year trend\n" //name, sex
+		"5. Prefix - total births (all-time, combined)\n" //prefix, sex
+		"6. Prefix - matches in a specific year\n" //prefix, year, sex
+		"7. Prefix - matches across a year range\n" //prefix, year1, year2, sex
+		"8. Prefix - year-by-year trend (combined)\n" //prefix, sex
+		"9. Prefix - top N names (sex/year filter)\n" //prefix, sex, year, N
+		"10. Run performance benchmark\n"
+		"11. Quit" << endl;
+}
+
 int main(){
 	Trie trie;
 	// HashTable hash;
@@ -20,24 +36,18 @@ int main(){
 	//hash.insert(...);
 
 	//User Selection
-	cout << "=== Baby Name Search ===\n"
-		"1. Name - total births (all-time)\n" //name, sex
-		"2. Name - births in a specific year\n" //name, year, sex
-		"3. Name - births across a year range\n" //name year1, year2, sex
-		"4. Name - year-by-year trend\n" //name, sex
-		"5. Prefix - total births (all-time, combined)\n" //prefix, sex
-		"6. Prefix - matches in a specific year\n" //prefix, year, sex
-		"7. Prefix - matches across a year range\n" //prefix, year1, year2, sex
-		"8. Prefix - year-by-year trend (combined)\n" //prefix, sex
-		"9. Prefix - top N names (sex/year filter)\n" //prefix, sex, year, N
-		"10. Run performance benchmark\n"
-		"11. Quit\n" << endl;
+	printMenu();
 
 	while (running) {
 		selection = -1;
+		sex = ' ';
+		year = -1;
+		year2 = -1;
+		N = -1;
+
 		while (selection == -1) {
 			line.clear();
-			cout << "Please enter your selection (#1-11): ";
+			cout << "\nPlease enter your selection (#0-11): ";
 			getline(cin, line);
 			try {
 				selection = stoi(line);
@@ -45,14 +55,14 @@ int main(){
 			catch (exception& e) {
 				cout << "Please enter a valid number." << endl;
 			}
-			if (selection < 1 || selection > 11) {
-				cout << "Please enter a number between 1 and 11." << endl;
+			if (selection < 0 || selection > 11) {
+				cout << "Please enter a number between 0 and 11." << endl;
 				selection = -1;
 			}
 		}
 
 		//Name/Prefix Insert:
-		if (selection != 10 && selection != 11) {
+		if (selection != 0 && selection != 10 && selection != 11) {
 			name.clear();
 			cout << "Please enter the name/prefix: ";
 			getline(cin, name);
@@ -65,7 +75,7 @@ int main(){
 				cout << "Please enter the year";
 				if (selection == 9)
 					cout << " or \"N\" to skip";
-				cout << ": " << endl;
+				cout << ": ";
 				getline(cin, line);
 				if (line == "N")
 					break;
@@ -102,8 +112,8 @@ int main(){
 				}
 			}
 		}
-		if (selection != 10 && selection != 11) {
-			//Sex Selection
+		//Sex Selection
+		if (selection != 0 && selection != 10 && selection != 11) {
 			while (sex == ' ') {
 				line.clear();
 				cout << "Please enter the sex (A = All, M = Male, F = Female): ";
@@ -116,6 +126,7 @@ int main(){
 					sex = toupper(line[0]);
 				if (sex != 'A' && sex != 'M' && sex != 'F') {
 					cout << "Please enter one of these letter (A/M/F)." << endl;
+					sex = ' ';
 				}
 			}
 		}
@@ -140,7 +151,10 @@ int main(){
 
 		cout << endl;
 
-		if (selection == 1) {
+		if (selection == 0) {
+			printMenu();
+		}
+		else if (selection == 1) {
 			cout << "You chose total births of \"" << name << "\" (" << sex << ") for all time." << endl;
 
 			cout << "Trie: " << endl;
@@ -170,7 +184,7 @@ int main(){
 			cout << "You chose total births of \"" << name << "\" (" << sex << ") from " << year << " to " << year2 << "." << endl;
 
 			int trieTotal = 0;
-			int hashTotal = 0;
+			// int hashTotal = 0;
 			for (int y = year; y <= year2; y++) {
 				trieTotal += trie.getYearTotal(name, sex, y, false);
 				// hashTotal += hash.getYearTotal(name, sex, y, false);
@@ -214,7 +228,7 @@ int main(){
 			cout << "You chose total births of prefix \"" << name << "-\" (" << sex << ") from " << year << " to " << year2 << "." << endl;
 
 			int trieTotal = 0;
-			int hashTotal = 0;
+			// int hashTotal = 0;
 			for (int y = year; y <= year2; y++) {
 				trieTotal += trie.getYearTotal(name, sex, y, true);
 				// hashTotal += hash.getYearTotal(name, sex, y, true);
@@ -241,7 +255,8 @@ int main(){
 			cout << "Quitting..." << endl;
 			running = false;
 		}
-		cout << endl;
+		if (selection != 11)
+			cout << "\n[Press 0 to Reprint the Menu]" << endl;
 	}
 
 	return 0;
