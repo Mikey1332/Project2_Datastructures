@@ -146,10 +146,12 @@ int main(){
 			cout << "Trie: " << endl;
 			cout << "There are [" <<
 			trie.getAllTimeTotal(name, sex, false) <<
-			"] births for \"" << name << "\" for all time." << endl;
+			"] births for \"" << name << "\" (" << sex << ") for all time." << endl;
 			cout << "------------------------------------" << endl;
 			cout << "Hash: " << endl;
-			// cout << hash.getAllTimeTotal(name, sex, false) + hash.getAllTimeTotal(name, sex, false) << endl;
+			// cout << "There are [" <<
+			// hash.getAllTimeTotal(name, sex, false) <<
+			// "] births for \"" << name << "\" (" << sex << ") for all time." << endl;
 		}
 		else if (selection == 2) {
 			cout << "You chose total births of \"" << name << "\" (" << sex << ") in " << year << "." << endl;
@@ -160,7 +162,9 @@ int main(){
 			"] births for \"" << name << "\" (" << sex << ") in " << year << "." << endl;
 			cout << "------------------------------------" << endl;
 			cout << "Hash: " << endl;
-			// cout << hash.getAllTimeTotal(name, sex, false) + hash.getAllTimeTotal(name, sex, false) << endl;
+			// cout << "There are [" <<
+			// hash.getYearTotal(name, sex, year, false) <<
+			// "] births for \"" << name << "\" (" << sex << ") in " << year << "." << endl;
 		}
 		else if (selection == 3) {
 			cout << "You chose total births of \"" << name << "\" (" << sex << ") from " << year << " to " << year2 << "." << endl;
@@ -182,17 +186,44 @@ int main(){
 		}
 		else if (selection == 5) {
 			cout << "You chose total births of prefix \"" << name << "-\" (" << sex << ") for all time." << endl;
-			cout << "Trie: " << endl;
-			cout << trie.getAllTimeTotal(name, 'M', true) + trie.getAllTimeTotal(name, 'F', true) << endl;
 
-			// cout << "Hash: " << endl;
-			// cout << hash.getAllTimeTotal(" ", 'M', true) + hash.getAllTimeTotal(" ", 'F', true) << endl;
+			cout << "Trie: " << endl;
+			cout << "There are [" <<
+			trie.getAllTimeTotal(name, sex, true) <<
+			"] births of prefix \"" << name << "-\" (" << sex << ") for all time." << endl;
+			cout << "------------------------------------" << endl;
+			cout << "Hash: " << endl;
+			// cout << "There are [" <<
+			// hash.getAllTimeTotal(name, sex, true) <<
+			// "] births of prefix \"" << name << "-\" (" << sex << ") for all time." << endl;
 		}
 		else if (selection == 6) {
 			cout << "You chose total births of prefix \"" << name << "-\" (" << sex << ") in " << year << "." << endl;
+
+			cout << "Trie: " << endl;
+			cout << "There are [" <<
+			trie.getYearTotal(name, sex, year, true) <<
+			"] births of prefix \"" << name << "-\" (" << sex << ") in " << year << "." << endl;
+			cout << "------------------------------------" << endl;
+			cout << "Hash: " << endl;
+			// cout << "There are [" <<
+			// hash.getYearTotal(name, sex, year, true) <<
+			// "] births of prefix \"" << name << "-\" (" << sex << ") in " << year << "." << endl;
 		}
 		else if (selection == 7) {
 			cout << "You chose total births of prefix \"" << name << "-\" (" << sex << ") from " << year << " to " << year2 << "." << endl;
+
+			int trieTotal = 0;
+			int hashTotal = 0;
+			for (int y = year; y <= year2; y++) {
+				trieTotal += trie.getYearTotal(name, sex, y, true);
+				// hashTotal += hash.getYearTotal(name, sex, y, true);
+			}
+			cout << "Trie: " << endl;
+			cout << "There are [" << trieTotal << "] births of prefix \"" << name << "-\"  (" << sex << ") from " << year << " to " << year2 << "." << endl;
+			cout << "------------------------------------" << endl;
+			cout << "Hash: " << endl;
+			// cout << "There are [" << hashTotal << "] births of prefix \"" << name << "-\"  (" << sex << ") from " << year << " to " << year2 << "." << endl;
 		}
 		else if (selection == 8) {
 			cout << "You chose the year-by-year trend of prefix \"" << name << "-\" (" << sex << ")." << endl;
