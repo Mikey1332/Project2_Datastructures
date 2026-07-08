@@ -39,7 +39,7 @@ public:
     int hash(string name);
     void insert(string name, char sex, int year, int count);
     int getAllTimeTotal(string name, char sex, bool pref);
-    int getYearTotal(string name, char sex, int year);
+    int getYearTotal(string name, char sex, int year, bool pref);
 
 };
 

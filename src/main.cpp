@@ -145,17 +145,37 @@ int main(){
 
 			cout << "Trie: " << endl;
 			cout << "There are [" <<
-			trie.getAllTimeTotal(name, sex, false) + trie.getAllTimeTotal(name, sex, false) <<
+			trie.getAllTimeTotal(name, sex, false) <<
 			"] births for \"" << name << "\" for all time." << endl;
-
-			// cout << "Hash: " << endl;
-			// cout << hash.getAllTimeTotal(name, 'M', false) + hash.getAllTimeTotal(name, 'F', false) << endl;
+			cout << "------------------------------------" << endl;
+			cout << "Hash: " << endl;
+			// cout << hash.getAllTimeTotal(name, sex, false) + hash.getAllTimeTotal(name, sex, false) << endl;
 		}
 		else if (selection == 2) {
 			cout << "You chose total births of \"" << name << "\" (" << sex << ") in " << year << "." << endl;
+
+			cout << "Trie: " << endl;
+			cout << "There are [" <<
+			trie.getYearTotal(name, sex, year, false) <<
+			"] births for \"" << name << "\" (" << sex << ") in " << year << "." << endl;
+			cout << "------------------------------------" << endl;
+			cout << "Hash: " << endl;
+			// cout << hash.getAllTimeTotal(name, sex, false) + hash.getAllTimeTotal(name, sex, false) << endl;
 		}
 		else if (selection == 3) {
 			cout << "You chose total births of \"" << name << "\" (" << sex << ") from " << year << " to " << year2 << "." << endl;
+
+			int trieTotal = 0;
+			int hashTotal = 0;
+			for (int y = year; y <= year2; y++) {
+				trieTotal += trie.getYearTotal(name, sex, y, false);
+				// hashTotal += hash.getYearTotal(name, sex, y, false);
+			}
+			cout << "Trie: " << endl;
+			cout << "There are [" << trieTotal << "] births for \"" << name << "\"  (" << sex << ") from " << year << " to " << year2 << "." << endl;
+			cout << "------------------------------------" << endl;
+			cout << "Hash: " << endl;
+			// cout << "There are [" << hashTotal << "] births for \"" << name << "\"  (" << sex << ") from " << year << " to " << year2 << "." << endl;
 		}
 		else if (selection == 4) {
 			cout << "You chose the year-by-year trend of \"" << name << "\" (" << sex << ")." << endl;

@@ -104,7 +104,7 @@ int HashTable::getAllTimeTotal(string name, char sex, bool pref) {
     return data->getAllTimeTotal(sex);
 }
 
-int HashTable::getYearTotal(string name, char sex, int year) {
+int HashTable::getYearTotal(string name, char sex, int year, bool pref) {
     GenderData* data = getData(name);
     // if (data) { // If found
     //     return data->getCount(sex,year);

@@ -18,6 +18,7 @@ class Trie {
     TrieNode* root;
 
     int getTotalOfPrefixHelper(TrieNode* node, string name, char sex);
+    int getYearTotalOfPrefixHelper(TrieNode* node, string name, char sex, int year);
 
 public:
 
@@ -27,7 +28,7 @@ public:
     bool search(string name, char sex, int year); // searching to see if a specific name exists, with a corresponding year and sex
     void print(int year); // just a basic print function for maybe all names + gender in a year with their count.
     int getAllTimeTotal(string name, char sex, bool pref);
-    int getYearTotal(string name, char sex, int year);
+    int getYearTotal(string name, char sex, int year, bool pref);
 
     // needed a destructor
     ~Trie();

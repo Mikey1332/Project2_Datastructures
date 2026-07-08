@@ -58,14 +58,36 @@ int Trie::getTotalOfPrefixHelper(TrieNode* node, string name, char sex) {
     return total;
 }
 
-int Trie::getYearTotal(string name, char sex, int year) {
+int Trie::getYearTotal(string name, char sex, int year, bool pref) {
+    if (root == nullptr)
+        return 0;
     TrieNode* curr = root;
     for (int i  = 0; i < int(name.length()); i++) {
         int index = tolower(name[i]) - 'a';
         curr = curr->children[index];
+        if (curr == nullptr)
+            return 0;
     }
-    return curr->data.getCount(sex, year);
-    //Returns -1 if year is not found
+    //If it is not for a prefix, return total for exact name
+    if (pref == false) {
+        if (curr->isName)
+            return curr->data.getCount(sex, year);
+        return 0;
+    }
+    //If it is a prefix
+    return getYearTotalOfPrefixHelper(curr, name, sex, year);
+}
+
+int Trie::getYearTotalOfPrefixHelper(TrieNode* node, string name, char sex, int year) {
+    //This goes through each letter for each node, even if it's not a child
+    if (node == nullptr)
+        return 0;
+    int total = 0;
+    if (node->isName)
+        total+=node->data.getCount(sex, year);
+    for (TrieNode* child : node->children)
+        total += getYearTotalOfPrefixHelper(child, name, sex, year);
+    return total;
 }
 
 // destructor for Trie
