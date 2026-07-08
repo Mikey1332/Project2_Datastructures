@@ -1,10 +1,11 @@
 #include <iostream>
 #include "trie.h"
 #include "hash.h"
+#include <chrono>
 using namespace std;
 
 void printMenu() {
-	cout << "=== Baby Name Search ===\n"
+	cout << "================ Baby Name Search Menu ================\n"
 		"0. Reprint Menu\n"
 		"1. Name - total births (all-time)\n" //name, sex
 		"2. Name - births in a specific year\n" //name, year, sex
@@ -19,6 +20,16 @@ void printMenu() {
 		"11. Quit" << endl;
 }
 
+long long findAverage(vector<long long> nums) {
+	if (nums.empty())
+		return -1;
+	long long sum = 0;
+	for (int i = 0; i < nums.size(); i++) {
+		sum += nums[i];
+	}
+	return sum/nums.size();
+}
+
 int main(){
 	Trie trie;
 	// HashTable hash;
@@ -29,11 +40,45 @@ int main(){
 	int year = -1;
 	int year2 = -1;
 	int N = -1;
-	// vector<string> arguments;
+
+	//Time Storage
+	auto start = chrono::high_resolution_clock::now();
+	cout << "hi" << endl;
+	auto end = chrono::high_resolution_clock::now();
+	auto elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
+	cout << elapsed.count() << endl;
+	// long long trieInsertTime;
+	// long long hashInsertTime;
+	vector<long long> trieAllTimeBirthTimes;
+	vector<long long> hashAllTimeBirthTimes;
+	vector<long long> trieYearBirthTimes;
+	vector<long long> hashYearBirthTimes;
+	vector<long long> trieYearRangeBirthTimes;
+	vector<long long> hashYearRangeBirthTimes;
+	vector<long long> trieYearByYearBirthTimes;
+	vector<long long> hashYearByYearBirthTimes;
+	vector<long long> trieAllTimeBirthTimesPrefix;
+	vector<long long> hashAllTimeBirthTimesPrefix;
+	vector<long long> trieYearBirthTimesPrefix;
+	vector<long long> hashYearBirthTimesPrefix;
+	vector<long long> trieYearRangeBirthTimesPrefix;
+	vector<long long> hashYearRangeBirthTimesPrefix;
+	vector<long long> trieYearByYearBirthTimesPrefix;
+	vector<long long> hashYearByYearBirthTimesPrefix;
+
 
 	//Do File Parsing:
+	//Trie:
+	start = chrono::high_resolution_clock::now();
 	//trie.insert(...);
+	end = chrono::high_resolution_clock::now();
+	// trieInsertTime = chrono::duration_cast<chrono::milliseconds>(end - start).count();
+
+	//Hash:
+	start = chrono::high_resolution_clock::now();
 	//hash.insert(...);
+	end = chrono::high_resolution_clock::now();
+	// hashInsertTime = chrono::duration_cast<chrono::milliseconds>(end - start).count();
 
 	//User Selection
 	printMenu();
@@ -155,108 +200,249 @@ int main(){
 			printMenu();
 		}
 		else if (selection == 1) {
-			cout << "You chose total births of \"" << name << "\" (" << sex << ") for all time." << endl;
+			// cout << "You chose total births of \"" << name << "\" (" << sex << ") for all time." << endl;
+			int allTimeTotal;
 
-			cout << "Trie: " << endl;
-			cout << "There are [" <<
-			trie.getAllTimeTotal(name, sex, false) <<
-			"] births for \"" << name << "\" (" << sex << ") for all time." << endl;
-			cout << "------------------------------------" << endl;
-			cout << "Hash: " << endl;
-			// cout << "There are [" <<
-			// hash.getAllTimeTotal(name, sex, false) <<
-			// "] births for \"" << name << "\" (" << sex << ") for all time." << endl;
+			start = chrono::high_resolution_clock::now();
+			allTimeTotal = trie.getAllTimeTotal(name, sex, false);
+			end = chrono::high_resolution_clock::now();
+			elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
+
+			cout << "---------------- Trie ----------------" << endl;
+			cout << "There are [" << allTimeTotal << "] births for \"" << name << "\" (" << sex << ") for all time." << endl;
+			cout << "Time: " << elapsed.count() << " milliseconds" << endl;
+			cout << endl;
+
+			trieAllTimeBirthTimes.push_back(elapsed.count());
+
+			start = chrono::high_resolution_clock::now();
+			// allTimeTotal = hash.getAllTimeTotal(name, sex, false);
+			end = chrono::high_resolution_clock::now();
+			elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
+
+			cout << "---------------- Hash ----------------" << endl;
+			cout << "There are [" << allTimeTotal << "] births for \"" << name << "\" (" << sex << ") for all time." << endl;
+			cout << "Time: " << elapsed.count() << " milliseconds" << endl;
+			cout << endl;
+
+			hashAllTimeBirthTimes.push_back(elapsed.count());
 		}
 		else if (selection == 2) {
-			cout << "You chose total births of \"" << name << "\" (" << sex << ") in " << year << "." << endl;
+			// cout << "You chose total births of \"" << name << "\" (" << sex << ") in " << year << "." << endl;
+			int yearTotal;
 
-			cout << "Trie: " << endl;
-			cout << "There are [" <<
-			trie.getYearTotal(name, sex, year, false) <<
-			"] births for \"" << name << "\" (" << sex << ") in " << year << "." << endl;
-			cout << "------------------------------------" << endl;
-			cout << "Hash: " << endl;
-			// cout << "There are [" <<
-			// hash.getYearTotal(name, sex, year, false) <<
-			// "] births for \"" << name << "\" (" << sex << ") in " << year << "." << endl;
+			start = chrono::high_resolution_clock::now();
+			yearTotal = trie.getYearTotal(name, sex, year, false);
+			end = chrono::high_resolution_clock::now();
+			elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
+
+			cout << "---------------- Trie ----------------" << endl;
+			cout << "There are [" << yearTotal << "] births for \"" << name << "\" (" << sex << ") in " << year << "." << endl;
+			cout << "Time: " << elapsed.count() << " milliseconds" << endl;
+			cout << endl;
+
+			trieYearBirthTimes.push_back(elapsed.count());
+
+			start = chrono::high_resolution_clock::now();
+			// yearTotal = hash.getYearTotal(name, sex, year, false);
+			end = chrono::high_resolution_clock::now();
+			elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
+
+			cout << "---------------- Hash ----------------" << endl;
+			cout << "There are [" << yearTotal << "] births for \"" << name << "\" (" << sex << ") in " << year << "." << endl;
+			cout << "Time: " << elapsed.count() << " milliseconds" << endl;
+			cout << endl;
+
+			hashYearBirthTimes.push_back(elapsed.count());
+
 		}
 		else if (selection == 3) {
-			cout << "You chose total births of \"" << name << "\" (" << sex << ") from " << year << " to " << year2 << "." << endl;
+			// cout << "You chose total births of \"" << name << "\" (" << sex << ") from " << year << " to " << year2 << "." << endl;
 
-			int trieTotal = 0;
-			// int hashTotal = 0;
+			int total = 0;
+			start = chrono::high_resolution_clock::now();
 			for (int y = year; y <= year2; y++) {
-				trieTotal += trie.getYearTotal(name, sex, y, false);
-				// hashTotal += hash.getYearTotal(name, sex, y, false);
+				total += trie.getYearTotal(name, sex, y, false);
 			}
-			cout << "Trie: " << endl;
-			cout << "There are [" << trieTotal << "] births for \"" << name << "\"  (" << sex << ") from " << year << " to " << year2 << "." << endl;
-			cout << "------------------------------------" << endl;
-			cout << "Hash: " << endl;
-			// cout << "There are [" << hashTotal << "] births for \"" << name << "\"  (" << sex << ") from " << year << " to " << year2 << "." << endl;
+			end = chrono::high_resolution_clock::now();
+			elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
+			trieYearRangeBirthTimes.push_back(elapsed.count());
+
+			cout << "---------------- Trie ----------------" << endl;
+			cout << "There are [" << total << "] births for \"" << name << "\"  (" << sex << ") from " << year << " to " << year2 << "." << endl;
+			cout << "Time: " << elapsed.count() << " milliseconds" << endl;
+			cout << endl;
+
+			total = 0;
+			start = chrono::high_resolution_clock::now();
+			for (int y = year; y <= year2; y++) {
+				// total += hash.getYearTotal(name, sex, y, false);
+			}
+			end = chrono::high_resolution_clock::now();
+			elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
+
+			cout << "---------------- Hash ----------------" << endl;
+			// cout << "There are [" << total << "] births for \"" << name << "\"  (" << sex << ") from " << year << " to " << year2 << "." << endl;
+			cout << "Time: " << elapsed.count() << " milliseconds" << endl;
+			cout << endl;
+
+			hashYearRangeBirthTimes.push_back(elapsed.count());
 		}
 		else if (selection == 4) {
 			cout << "You chose the year-by-year trend of \"" << name << "\" (" << sex << ")." << endl;
 		}
 		else if (selection == 5) {
-			cout << "You chose total births of prefix \"" << name << "-\" (" << sex << ") for all time." << endl;
+			// cout << "You chose total births of prefix \"" << name << "-\" (" << sex << ") for all time." << endl;
+			int allTimeTotal;
 
-			cout << "Trie: " << endl;
-			cout << "There are [" <<
-			trie.getAllTimeTotal(name, sex, true) <<
-			"] births of prefix \"" << name << "-\" (" << sex << ") for all time." << endl;
-			cout << "------------------------------------" << endl;
-			cout << "Hash: " << endl;
-			// cout << "There are [" <<
-			// hash.getAllTimeTotal(name, sex, true) <<
-			// "] births of prefix \"" << name << "-\" (" << sex << ") for all time." << endl;
+			start = chrono::high_resolution_clock::now();
+			allTimeTotal = trie.getAllTimeTotal(name, sex, true);
+			end = chrono::high_resolution_clock::now();
+			elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
+
+			cout << "---------------- Trie ----------------" << endl;
+			cout << "There are [" << allTimeTotal << "] births of prefix \"" << name << "-\" (" << sex << ") for all time." << endl;
+			cout << "Time: " << elapsed.count() << " milliseconds" << endl;
+			cout << endl;
+
+			trieAllTimeBirthTimesPrefix.push_back(elapsed.count());
+
+			start = chrono::high_resolution_clock::now();
+			// allTimeTotal = hash.getAllTimeTotal(name, sex, true);
+			end = chrono::high_resolution_clock::now();
+			elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
+
+			cout << "---------------- Hash ----------------" << endl;
+			cout << "There are [" << allTimeTotal << "] births of prefix \"" << name << "-\" (" << sex << ") for all time." << endl;
+			cout << "Time: " << elapsed.count() << " milliseconds" << endl;
+			cout << endl;
+
+			hashAllTimeBirthTimesPrefix.push_back(elapsed.count());
 		}
 		else if (selection == 6) {
-			cout << "You chose total births of prefix \"" << name << "-\" (" << sex << ") in " << year << "." << endl;
+			// cout << "You chose total births of prefix \"" << name << "-\" (" << sex << ") in " << year << "." << endl;
+			int yearTotal;
 
-			cout << "Trie: " << endl;
-			cout << "There are [" <<
-			trie.getYearTotal(name, sex, year, true) <<
-			"] births of prefix \"" << name << "-\" (" << sex << ") in " << year << "." << endl;
-			cout << "------------------------------------" << endl;
-			cout << "Hash: " << endl;
-			// cout << "There are [" <<
-			// hash.getYearTotal(name, sex, year, true) <<
-			// "] births of prefix \"" << name << "-\" (" << sex << ") in " << year << "." << endl;
+			start = chrono::high_resolution_clock::now();
+			yearTotal = trie.getYearTotal(name, sex, year, true);
+			end = chrono::high_resolution_clock::now();
+			elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
+
+			cout << "---------------- Trie ----------------" << endl;
+			cout << "There are [" << yearTotal << "] births of prefix \"" << name << "-\" (" << sex << ") in " << year << "." << endl;
+			cout << "Time: " << elapsed.count() << " milliseconds" << endl;
+			cout << endl;
+
+			trieYearBirthTimesPrefix.push_back(elapsed.count());
+
+			start = chrono::high_resolution_clock::now();
+			// yearTotal = hash.getYearTotal(name, sex, year, true);
+			end = chrono::high_resolution_clock::now();
+			elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
+
+			cout << "---------------- Hash ----------------" << endl;
+			cout << "There are [" << yearTotal << "] births of prefix \"" << name << "-\" (" << sex << ") in " << year << "." << endl;
+			cout << "Time: " << elapsed.count() << " milliseconds" << endl;
+			cout << endl;
+
+			hashYearBirthTimesPrefix.push_back(elapsed.count());
+
 		}
 		else if (selection == 7) {
-			cout << "You chose total births of prefix \"" << name << "-\" (" << sex << ") from " << year << " to " << year2 << "." << endl;
+			// cout << "You chose total births of prefix \"" << name << "-\" (" << sex << ") from " << year << " to " << year2 << "." << endl;
 
-			int trieTotal = 0;
-			// int hashTotal = 0;
+			int total = 0;
+			start = chrono::high_resolution_clock::now();
 			for (int y = year; y <= year2; y++) {
-				trieTotal += trie.getYearTotal(name, sex, y, true);
-				// hashTotal += hash.getYearTotal(name, sex, y, true);
+				total += trie.getYearTotal(name, sex, y, true);
 			}
-			cout << "Trie: " << endl;
-			cout << "There are [" << trieTotal << "] births of prefix \"" << name << "-\"  (" << sex << ") from " << year << " to " << year2 << "." << endl;
-			cout << "------------------------------------" << endl;
-			cout << "Hash: " << endl;
-			// cout << "There are [" << hashTotal << "] births of prefix \"" << name << "-\"  (" << sex << ") from " << year << " to " << year2 << "." << endl;
+			end = chrono::high_resolution_clock::now();
+			elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
+
+			cout << "---------------- Trie ----------------" << endl;
+			cout << "There are [" << total << "] births of prefix \"" << name << "-\"  (" << sex << ") from " << year << " to " << year2 << "." << endl;
+			cout << "Time: " << elapsed.count() << " milliseconds" << endl;
+			cout << endl;
+
+			trieYearRangeBirthTimesPrefix.push_back(elapsed.count());
+
+			total = 0;
+			start = chrono::high_resolution_clock::now();
+			for (int y = year; y <= year2; y++) {
+				// total += hash.getYearTotal(name, sex, y, true);
+			}
+			end = chrono::high_resolution_clock::now();
+			elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
+
+			cout << "---------------- Hash ----------------" << endl;
+			// cout << "There are [" << total << "] births of prefix \"" << name << "-\"  (" << sex << ") from " << year << " to " << year2 << "." << endl;
+			cout << "Time: " << elapsed.count() << " milliseconds" << endl;
+			cout << endl;
+
+			hashYearRangeBirthTimesPrefix.push_back(elapsed.count());
 		}
 		else if (selection == 8) {
 			cout << "You chose the year-by-year trend of prefix \"" << name << "-\" (" << sex << ")." << endl;
 		}
 		else if (selection == 9) {
-			cout << "You chose the top " << N << " names for prefix \"" << name << "-\" (" << sex << ")";
+			// cout << "You chose the top " << N << " names for prefix \"" << name << "-\" (" << sex << ")";
 			if (year != -1)
 				cout << " in " << year;
 			cout << "." << endl;
 		}
 		else if (selection == 10) {
-			cout << "You chose to run a performance benchmark." << endl;
+			cout << "================ Performance Benchmark ================\n" << endl;
+
+			cout << left
+				 << setw(45) << "Operation"
+				 << setw(15) << "Trie (ms)"
+				 << setw(15) << "Hash Table (ms)" << endl;
+
+			cout << "---------------------------------------------------------------------------" << endl;
+
+			cout << setw(45) << "Insert" << endl;
+				 // << setw(15) << trieInsertTime
+				 // << setw(15) << hashInsertTime << endl;
+
+			cout << setw(45) << "All-Time Birth Search (avg.)"
+				 << setw(15) << findAverage(trieAllTimeBirthTimes)
+				 << setw(15) << findAverage(hashAllTimeBirthTimes) << endl;
+
+			cout << setw(45) << "Year Birth Search (avg.)"
+				 << setw(15) << findAverage(trieYearBirthTimes)
+				 << setw(15) << findAverage(hashYearBirthTimes) << endl;
+
+			cout << setw(45) << "Year Range Birth Search (avg.)"
+				 << setw(15) << findAverage(trieYearRangeBirthTimes)
+				 << setw(15) << findAverage(hashYearRangeBirthTimes) << endl;
+
+			cout << setw(45) << "Year-by-Year Birth Search (avg.)"
+				 << setw(15) << findAverage(trieYearByYearBirthTimes)
+				 << setw(15) << findAverage(hashYearByYearBirthTimes) << endl;
+
+			cout << setw(45) << "Prefix All-Time Birth Search (avg.)"
+				 << setw(15) << findAverage(trieAllTimeBirthTimesPrefix)
+				 << setw(15) << findAverage(hashAllTimeBirthTimesPrefix) << endl;
+
+			cout << setw(45) << "Prefix Year Birth Search (avg.)"
+				 << setw(15) << findAverage(trieYearBirthTimesPrefix)
+				 << setw(15) << findAverage(hashYearBirthTimesPrefix) << endl;
+
+			cout << setw(45) << "Prefix Year Range Birth Search (avg.)"
+				 << setw(15) << findAverage(trieYearRangeBirthTimesPrefix)
+				 << setw(15) << findAverage(hashYearRangeBirthTimesPrefix) << endl;
+
+			cout << setw(45) << "Prefix Year-by-Year Birth Search (avg.)"
+				 << setw(15) << findAverage(trieYearByYearBirthTimesPrefix)
+				 << setw(15) << findAverage(hashYearByYearBirthTimesPrefix) << endl;
+			cout << endl;
 		}
 		else { //if (selection == 11) - Quitting
 			cout << "Quitting..." << endl;
 			running = false;
 		}
 		if (selection != 11)
-			cout << "\n[Press 0 to Reprint the Menu]" << endl;
+			cout << "[Press 0 to Reprint the Menu]" << endl;
 	}
 
 	return 0;
