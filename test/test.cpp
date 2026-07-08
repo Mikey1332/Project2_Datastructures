@@ -176,21 +176,21 @@ TEST_CASE("Trie getAllTimeTotal exact searches not affected by names sharing a p
 
 TEST_CASE("Trie getYearTotal returns correct count for a specific year", "[exact][getYearTotal][trie][year]") {
     Trie trie = makeTestTrie();
-    REQUIRE(trie.getYearTotal("Liam", 'M', 2019) == 700);
-    REQUIRE(trie.getYearTotal("Liam", 'M', 2020) == 680);
-    REQUIRE(trie.getYearTotal("Liam", 'M', 2021) == 660);
+    REQUIRE(trie.getYearTotal("Liam", 'M', 2019, false) == 700);
+    REQUIRE(trie.getYearTotal("Liam", 'M', 2020, false) == 680);
+    REQUIRE(trie.getYearTotal("Liam", 'M', 2021, false) == 660);
 }
 
 TEST_CASE("Trie getYearTotal returns -1 for year not in data", "[getYearTotal][trie][year]") {
     Trie trie = makeTestTrie();
-    REQUIRE(trie.getYearTotal("Liam", 'M', 1800) == -1);
-    REQUIRE(trie.getYearTotal("Liam", 'M', 2100) == -1);
+    REQUIRE(trie.getYearTotal("Liam", 'M', 1800, false) == -1);
+    REQUIRE(trie.getYearTotal("Liam", 'M', 2100, false) == -1);
 }
 
 TEST_CASE("Trie getYearTotal returns -1 for a name without that year", "[getYearTotal][trie][year]") {
     Trie trie = makeTestTrie();
     // Emily only has 2019
-    REQUIRE(trie.getYearTotal("Emily", 'F', 2020) == -1);
+    REQUIRE(trie.getYearTotal("Emily", 'F', 2020, false) == -1);
 }
 
 TEST_CASE("Hash function hashes correctly", "[hash][BROKEN]") {
@@ -271,21 +271,21 @@ TEST_CASE("Hash getAllTimeTotal exact searches not affected by names sharing a p
 
 TEST_CASE("Hash getYearTotal returns correct count for a specific year", "[exact][getYearTotal][hash][year]") {
     HashTable hash = makeTestHash();
-    REQUIRE(hash.getYearTotal("Liam", 'M', 2019) == 700);
-    REQUIRE(hash.getYearTotal("Liam", 'M', 2020) == 680);
-    REQUIRE(hash.getYearTotal("Liam", 'M', 2021) == 660);
+    REQUIRE(hash.getYearTotal("Liam", 'M', 2019, false) == 700);
+    REQUIRE(hash.getYearTotal("Liam", 'M', 2020, false) == 680);
+    REQUIRE(hash.getYearTotal("Liam", 'M', 2021, false) == 660);
 }
 
 TEST_CASE("Hash getYearTotal returns -1 for year not in data", "[getYearTotal][hash][year]") {
     HashTable hash = makeTestHash();
-    REQUIRE(hash.getYearTotal("Liam", 'M', 1800) == -1);
-    REQUIRE(hash.getYearTotal("Liam", 'M', 2099) == -1);
+    REQUIRE(hash.getYearTotal("Liam", 'M', 1800, false) == -1);
+    REQUIRE(hash.getYearTotal("Liam", 'M', 2099, false) == -1);
 }
 
 TEST_CASE("Hash getYearTotal returns -1 for a name without that year", "[getYearTotal][hash][year]") {
     HashTable hash = makeTestHash();
     // Emily only has 2019
-    REQUIRE(hash.getYearTotal("Emily", 'F', 2020) == -1);
+    REQUIRE(hash.getYearTotal("Emily", 'F', 2020, false) == -1);
 }
 
 TEST_CASE("Hash getAllTimeTotal returns correct all-time sum for prefix search", "[all-time][hash][prefix]") {
