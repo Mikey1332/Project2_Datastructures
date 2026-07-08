@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include "trie.h"
 #include "hash.h"
 #include <chrono>
@@ -24,7 +25,7 @@ long long findAverage(vector<long long> nums) {
 	if (nums.empty())
 		return -1;
 	long long sum = 0;
-	for (int i = 0; i < nums.size(); i++) {
+	for (int i = 0; i < (int)nums.size(); i++) {
 		sum += nums[i];
 	}
 	return sum/nums.size();
@@ -32,7 +33,7 @@ long long findAverage(vector<long long> nums) {
 
 int main(){
 	Trie trie;
-	// HashTable hash;
+	HashTable hash;
 	string line, name, selectionString;
 	char sex = ' ';
 	bool running = true;
@@ -216,7 +217,7 @@ int main(){
 			trieAllTimeBirthTimes.push_back(elapsed.count());
 
 			start = chrono::high_resolution_clock::now();
-			// allTimeTotal = hash.getAllTimeTotal(name, sex, false);
+			allTimeTotal = hash.getAllTimeTotal(name, sex, false);
 			end = chrono::high_resolution_clock::now();
 			elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
 
@@ -244,7 +245,7 @@ int main(){
 			trieYearBirthTimes.push_back(elapsed.count());
 
 			start = chrono::high_resolution_clock::now();
-			// yearTotal = hash.getYearTotal(name, sex, year, false);
+			yearTotal = hash.getYearTotal(name, sex, year, false);
 			end = chrono::high_resolution_clock::now();
 			elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
 
@@ -276,7 +277,7 @@ int main(){
 			total = 0;
 			start = chrono::high_resolution_clock::now();
 			for (int y = year; y <= year2; y++) {
-				// total += hash.getYearTotal(name, sex, y, false);
+				total += hash.getYearTotal(name, sex, y, false);
 			}
 			end = chrono::high_resolution_clock::now();
 			elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
@@ -308,7 +309,7 @@ int main(){
 			trieAllTimeBirthTimesPrefix.push_back(elapsed.count());
 
 			start = chrono::high_resolution_clock::now();
-			// allTimeTotal = hash.getAllTimeTotal(name, sex, true);
+			allTimeTotal = hash.getAllTimeTotal(name, sex, true);
 			end = chrono::high_resolution_clock::now();
 			elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
 
@@ -336,7 +337,7 @@ int main(){
 			trieYearBirthTimesPrefix.push_back(elapsed.count());
 
 			start = chrono::high_resolution_clock::now();
-			// yearTotal = hash.getYearTotal(name, sex, year, true);
+			yearTotal = hash.getYearTotal(name, sex, year, true);
 			end = chrono::high_resolution_clock::now();
 			elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
 
@@ -369,7 +370,7 @@ int main(){
 			total = 0;
 			start = chrono::high_resolution_clock::now();
 			for (int y = year; y <= year2; y++) {
-				// total += hash.getYearTotal(name, sex, y, true);
+				total += hash.getYearTotal(name, sex, y, true);
 			}
 			end = chrono::high_resolution_clock::now();
 			elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);

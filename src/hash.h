@@ -14,7 +14,7 @@ class HashTable {
         Slot() : occupied(false) {}
     };
 
-    // int base;
+    int base;
     int filledSlots;
     int capacity;
     vector<Slot> buckets;
@@ -24,10 +24,7 @@ class HashTable {
 
 public:
 
-    // HashTable() : base(31), filledSlots(0), capacity(200003) {
-    //     buckets.resize(capacity);
-    // }
-    HashTable() : filledSlots(0), capacity(200003) {
+    HashTable() : base(31), filledSlots(0), capacity(200003) {
         buckets.resize(capacity);
     }
 

@@ -19,7 +19,7 @@ int HashTable::hash(string name) { // this sucks but temporary
     for (char c : name) {
         index += (long long)(tolower(c) - 'a') * (long long)name.length();
     }
-    return (int)index;
+    return (int)index % base;
 }
 
 void HashTable::insert(string name, char sex, int year, int count) {
@@ -106,10 +106,10 @@ int HashTable::getAllTimeTotal(string name, char sex, bool pref) {
 
 int HashTable::getYearTotal(string name, char sex, int year, bool pref) {
     GenderData* data = getData(name);
-    // if (data) { // If found
-    //     return data->getCount(sex,year);
-    // }
-    // // If not found
-    // return 0;
+    if (data) { // If found
+        return data->getCount(sex,year);
+    }
+    // If not found
+    return 0;
     return data->getCount(sex,year);
 }
