@@ -175,4 +175,4 @@ TEST_CASE("Hash getAllTimeTotal M and F for same name are separate for prefix se
 //     REQUIRE(results[0].second == 1180);
 // }
 //
-// // do same for name not prefix
+// // do same for name full name not prefix
