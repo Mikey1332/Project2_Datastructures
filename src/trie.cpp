@@ -104,3 +104,28 @@ void Trie::clear(TrieNode* curr) {
 Trie::~Trie() {
     clear(root);
 }
+
+vector<pair<string, int>> Trie::topN(string name, char sex, int n, bool pref) {
+
+    vector<pair<string, int>> results;
+    int minCount = 0;
+    int minIndex = 0;
+
+    TrieNode* curr = root;
+    for (char c : name) {
+        int index = tolower(c) - 'a';
+        if (!curr->children[index]) {
+            // Does not exist, return empty
+            return results;
+        }
+        curr = curr->children[index];
+    }
+
+    // keep comparing the stuff as the trie travels
+    // see hash.cpp for idea
+    // bedtime i finish tomorrow
+
+    // sort before returning
+
+    return results;
+}
