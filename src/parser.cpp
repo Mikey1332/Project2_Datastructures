@@ -38,7 +38,7 @@ int GenderData::getCountHelper(vector<pair<int, int>> &allYears, int year) {
         }
     }
     //Year not found:
-    return -1;
+    return 0;
 }
 
 

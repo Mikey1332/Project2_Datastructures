@@ -38,12 +38,12 @@ inline HashTable makeTestHash() {
     HashTable hash;
 
     hash.insert("Albert",   'M', 2020, 500);
-    hash.insert("Albert",   'M', 2021, 700);
+    hash.insert("Albert",   'M', 2021, 700); // Albert 1200
     hash.insert("Liam",     'M', 2019, 700);
     hash.insert("Liam",     'M', 2020, 680);
     hash.insert("Liam",     'M', 2021, 660);
-    hash.insert("Bob",      'M', 2019, 600);
-    hash.insert("Bob",      'M', 2020, 580);
+    hash.insert("Bob",      'M', 2019, 1000);
+    hash.insert("Bob",      'M', 2020, 580); // Bob 1580
     hash.insert("Sam",      'M', 2019, 200);
     hash.insert("Sam",      'F', 2019, 150);
     hash.insert("Samuel",   'M', 2000, 950);
@@ -53,7 +53,7 @@ inline HashTable makeTestHash() {
     hash.insert("Emma",     'F', 2021, 460);
     hash.insert("Emily",    'F', 2019, 300);
     hash.insert("Benjamin", 'M', 2019, 600);
-    hash.insert("Benjamin", 'M', 2020, 580);
+    hash.insert("Benjamin", 'M', 2020, 580); // Benjamin 1180
     hash.insert("Benny",    'M', 2019, 100);
     hash.insert("Brad",     'M', 2019, 250);
     hash.insert("Brett",    'M', 2019, 90);

@@ -1,6 +1,6 @@
 #include "test_helper.h"
 
-TEST_CASE("Hash function hashes correctly", "[hash][BROKEN]") {
+TEST_CASE("Hash function hashes correctly", "[hash]") {
     HashTable hash;
 
     string name1 = "A";
@@ -41,9 +41,9 @@ TEST_CASE("Hash filledSlots matches manually calculated occupied slots","[hash]"
             occupied++;
         }
     }
-    // Warning: this will fail if the test hash tree is modified
-    REQUIRE(hash.getFilledSlots() == 8);
-    REQUIRE(occupied == 8);
+    // 12 names in table
+    REQUIRE(hash.getFilledSlots() == 12);
+    REQUIRE(occupied == 12);
 }
 
 TEST_CASE("Hash getAllTimeTotal returns correct all-time sum for exact name search", "[all-time][exact][hash]") {
@@ -72,7 +72,7 @@ TEST_CASE("Hash getAllTimeTotal M and F for same name are separate for exact nam
 TEST_CASE("Hash getAllTimeTotal exact searches not affected by names sharing a prefix", "[all-time][exact][hash]") {
     HashTable hash = makeTestHash();
     // Emma and Emily share "Em" but totals must be separate
-    REQUIRE(hash.getAllTimeTotal("Emma",  'F', false) == 1440); // 500+480+460
+    REQUIRE(hash.getAllTimeTotal("Emma",  'F', false) == 1440); // 500 + 480 + 460
     REQUIRE(hash.getAllTimeTotal("Emily", 'F', false) == 300);
 }
 
@@ -83,21 +83,21 @@ TEST_CASE("Hash getYearTotal returns correct count for a specific year", "[exact
     REQUIRE(hash.getYearTotal("Liam", 'M', 2021, false) == 660);
 }
 
-TEST_CASE("Hash getYearTotal returns -1 for year not in data", "[getYearTotal][hash][year]") {
+TEST_CASE("Hash getYearTotal returns 0 for year not in data", "[getYearTotal][hash][year]") {
     HashTable hash = makeTestHash();
-    REQUIRE(hash.getYearTotal("Liam", 'M', 1800, false) == -1);
-    REQUIRE(hash.getYearTotal("Liam", 'M', 2099, false) == -1);
+    REQUIRE(hash.getYearTotal("Liam", 'M', 1800, false) == 0);
+    REQUIRE(hash.getYearTotal("Liam", 'M', 2099, false) == 0);
 }
 
-TEST_CASE("Hash getYearTotal returns -1 for a name without that year", "[getYearTotal][hash][year]") {
+TEST_CASE("Hash getYearTotal returns 0 for a name without that year", "[getYearTotal][hash][year]") {
     HashTable hash = makeTestHash();
     // Emily only has 2019
-    REQUIRE(hash.getYearTotal("Emily", 'F', 2020, false) == -1);
+    REQUIRE(hash.getYearTotal("Emily", 'F', 2020, false) == 0);
 }
 
 TEST_CASE("Hash getAllTimeTotal returns correct all-time sum for prefix search", "[all-time][hash][prefix]") {
     HashTable hash = makeTestHash();
-    // Emma F: 500+480+460
+    // Emma F: 500 + 480 + 460
     // Emily F: 300
     // Total "Em" = 1740
     REQUIRE(hash.getAllTimeTotal("Em", 'F', true) == 1740);
@@ -110,69 +110,120 @@ TEST_CASE("Hash getAllTimeTotal for name not inserted for prefix search", "[all-
 
 TEST_CASE("Hash getAllTimeTotal M and F for same name are separate for prefix search", "[all-time][gender][hash][prefix]") {
     HashTable hash = makeTestHash();
-    // M : Sam + Samuel = 200+950
-    // F : Sam + Samantha = 150+700
+    // M : Sam + Samuel = 200 + 950
+    // F : Sam + Samantha = 150 + 700
     REQUIRE(hash.getAllTimeTotal("Sam", 'M', true) == 1150);
     REQUIRE(hash.getAllTimeTotal("Sam", 'F', true) == 850);
 }
 
-// // fix stuff
+TEST_CASE("Hash topN returns correct number of results", "[hash][topN]") {
+    HashTable hash = makeTestHash();
+    auto results = hash.topN("B", 'M', 3);
+    REQUIRE(results.size() == 3);
+}
+
+TEST_CASE("Hash topN results are sorted descending by count", "[hash][topN]") {
+    HashTable hash = makeTestHash();
+    auto results = hash.topN("B", 'M', 3);
+    for (int i = 0; i < (int)results.size() - 1; i++)
+        REQUIRE(results[i].second >= results[i+1].second);
+}
+
+TEST_CASE("Hash topN returns correct top 3 names", "[hash][topN]") {
+    HashTable hash = makeTestHash();
+    auto results = hash.topN("B", 'M', 3);
+    REQUIRE(results[0].first == "Benjamin");
+    REQUIRE(results[0].second == 1180);
+    REQUIRE(results[1].first == "Bob");
+    REQUIRE(results[1].second == 1580);
+    REQUIRE(results[2].first == "Brad");
+    REQUIRE(results[2].second == 250);
+}
+
+TEST_CASE("Hash topN filters by gender", "[gender][hash][topN]") {
+    HashTable hash = makeTestHash();
+    vector<pair<string,int>> results;
+
+    SECTION("Male only") {
+        results = hash.topN("Sam", 'M', 5);
+
+        REQUIRE(results.size() == 2); // Sam and Samuel
+        REQUIRE(results[0].first == "Samuel"); // 950
+        REQUIRE(results[1].first == "Sam"); // 200
+
+        bool foundSamantha = false;
+        for (const auto& result : results)
+            if (result.first == "Samantha")
+                foundSamantha = true;
+
+        REQUIRE_FALSE(foundSamantha);
+    }
+
+    SECTION("Female only") {
+        results = hash.topN("Sam", 'F', 5);
+
+        REQUIRE(results.size() == 2); // Sam and Samantha
+        REQUIRE(results[0].first == "Samantha"); // 700
+        REQUIRE(results[1].first == "Sam"); // 150
+
+        bool foundSamuel = false;
+        for (const auto& result : results)
+            if (result.first == "Samuel")
+                foundSamuel = true;
+
+        REQUIRE_FALSE(foundSamuel);
+    }
+
+    SECTION("All genders") {
+        results = hash.topN("Sam", 'A', 5);
+
+        REQUIRE(results.size() == 3); // Sam Samuel Samantha
+
+        bool foundSamuel = false;
+        for (const auto& result : results)
+            if (result.first == "Samuel")
+                foundSamuel = true;
+        REQUIRE(foundSamuel);
+
+        bool foundSamantha = false;
+        for (const auto& result : results)
+            if (result.first == "Samuel")
+                foundSamantha = true;
+        REQUIRE(foundSamantha);
+
+        bool foundSam = false;
+        for (const auto& result : results)
+            if (result.first == "Samuel")
+                foundSam = true;
+        REQUIRE(foundSam);
+    }
+}
+
+TEST_CASE("Hash topN, N more than actual results, returns only results", "[hash][topN]") {
+    HashTable hash = makeTestHash();
+    auto results = hash.topN("B", 'M', 20);
+    // 5 names start with B
+    REQUIRE(results.size() == 5);
+}
+
+TEST_CASE("Hash topN with no matching prefix returns empty", "[hash][topN]") {
+    HashTable hash = makeTestHash();
+    auto results = hash.topN("Qzx", 'M', 10);
+    REQUIRE(results.empty());
+}
+
+TEST_CASE("Hash topN with N=1 returns only the single highest", "[hash][topN]") {
+    HashTable hash = makeTestHash();
+    auto results = hash.topN("B", 'M', 1);
+    REQUIRE(results.size() == 1);
+    REQUIRE(results[0].first == "Bob");
+    REQUIRE(results[0].second == 1580);
+}
+
+// wait was topN supposed to filter by year?
 //
-// TEST_CASE("Hash topN returns correct number of results", "[hash][prefix][topN][BROKEN]") {
+// TEST_CASE("Hash topN counts reflect all-time totals not single year", "[all-time][hash][topN]") {
 //     HashTable hash = makeTestHash();
-//     auto results = hash.topN("B", 'M', 3,true); // random num fix later
-//     REQUIRE(results.size() == 3);
-// }
-//
-// TEST_CASE("Hash topN results are sorted descending by count", "[hash][prefix][topN][BROKEN]") {
-//     HashTable hash = makeTestHash();
-//     auto results = hash.topN("B", 'M', 3,true);
-//     for (int i = 0; i < (int)results.size() - 1; i++)
-//         REQUIRE(results[i].second >= results[i+1].second);
-// }
-//
-// TEST_CASE("Hash topN returns correct top 3 names", "[hash][prefix][topN][BROKEN]") {
-//     HashTable hash = makeTestHash();
-//     auto results = hash.topN("B", 'M', 3,true);
-//     REQUIRE(results[0].first == "Benjamin");
+//     auto results = hash.topN("B", 'M', 1);
 //     REQUIRE(results[0].second == 1180);
-//     REQUIRE(results[1].first == "Bob");
-//     REQUIRE(results[1].second == 400);
-//     REQUIRE(results[2].first == "Brad");
-//     REQUIRE(results[2].second == 250);
 // }
-//
-// TEST_CASE("Hash topN does not include wrong gender", "[gender][hash][prefix][topN][BROKEN]") {
-//     HashTable hash = makeTestHash();
-//     auto results = hash.topN("B", 'M', 5,true);
-//     for (auto result : results)
-//         REQUIRE(result.first != "Alice");
-// }
-//
-// TEST_CASE("Hash topN, N more than actual results, returns only results", "[edge][hash][prefix][topN][BROKEN]") {
-//     HashTable hash = makeTestHash();
-//     auto results = hash.topN("B", 'M', 20,true);
-//     REQUIRE(results.size() == 5);
-// }
-//
-// TEST_CASE("Hash topN with no matching prefix returns empty", "[edge][hash][prefix][topN][BROKEN]") {
-//     HashTable hash = makeTestHash();
-//     auto results = hash.topN("Qzx", 'M', 10,true);
-//     REQUIRE(results.empty());
-// }
-//
-// TEST_CASE("Hash topN with N=1 returns only the single highest", "[hash][prefix][topN][BROKEN]") {
-//     HashTable hash = makeTestHash();
-//     auto results = hash.topN("B", 'M', 1,true);
-//     REQUIRE(results.size() == 1);
-//     REQUIRE(results[0].first == "Benjamin");
-//     REQUIRE(results[0].second == 1180);
-// }
-//
-// TEST_CASE("Hash topN counts reflect all-time totals not single year", "[all-time][hash][prefix][topN][BROKEN]") {
-//     HashTable hash = makeTestHash();
-//     auto results = hash.topN("B", 'M', 1,true);
-//     REQUIRE(results[0].second == 1180);
-// }
-//
-// // do same for name full name not prefix
