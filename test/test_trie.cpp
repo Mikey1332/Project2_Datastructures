@@ -93,7 +93,7 @@ TEST_CASE("Trie topN returns correct top 3 names", "[trie][topN]") {
     Trie trie = makeTestTrie();
     auto results = trie.topN("B", 'M', 3);
     REQUIRE(results[0].first == "Bob");
-    REQUIRE(results[0].second == 1180);
+    REQUIRE(results[0].second == 1580);
     REQUIRE(results[1].first == "Benjamin");
     REQUIRE(results[1].second == 1180);
     REQUIRE(results[2].first == "Brad");
@@ -177,7 +177,7 @@ TEST_CASE("Trie topN with N=1 returns only the single highest", "[trie][topN]") 
     auto results = trie.topN("B", 'M', 1);
     REQUIRE(results.size() == 1);
     REQUIRE(results[0].first == "Bob");
-    REQUIRE(results[0].second == 1180);
+    REQUIRE(results[0].second == 1580);
 }
 
 // wait was topN supposed to filter by year?

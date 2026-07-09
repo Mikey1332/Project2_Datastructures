@@ -69,6 +69,7 @@ TEST_CASE("Hash getAllTimeTotal for name not inserted for exact name search", "[
 
 TEST_CASE("Hash getAllTimeTotal for correct name but wrong gender for exact search", "[all-time][exact][gender][hash]") {
     HashTable hash = makeTestHash();
+    // No female Bob exists
     REQUIRE(hash.getAllTimeTotal("Bob", 'F', false) == 0);
 }
 
@@ -142,10 +143,10 @@ TEST_CASE("Hash topN results are sorted descending by count", "[hash][topN]") {
 TEST_CASE("Hash topN returns correct top 3 names", "[hash][topN]") {
     HashTable hash = makeTestHash();
     auto results = hash.topN("B", 'M', 3);
-    REQUIRE(results[0].first == "Benjamin");
-    REQUIRE(results[0].second == 1180);
-    REQUIRE(results[1].first == "Bob");
-    REQUIRE(results[1].second == 1580);
+    REQUIRE(results[0].first == "Bob");
+    REQUIRE(results[0].second == 1580);
+    REQUIRE(results[1].first == "Benjamin");
+    REQUIRE(results[1].second == 1180);
     REQUIRE(results[2].first == "Brad");
     REQUIRE(results[2].second == 250);
 }

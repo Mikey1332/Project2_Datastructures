@@ -1,6 +1,5 @@
 #include "trie.h"
 
-// constructor for TrieNode
 Trie::TrieNode::TrieNode() {
     name = "";
     for (int i = 0; i < 26; i++) {
@@ -125,11 +124,25 @@ void Trie::topNHelper(TrieNode* node, char sex, int n, vector<pair<string, int>>
     if (!node->name.empty()) {
         int total = node->data.getAllTimeTotal(sex);
 
-        // If vector not full yet
-        if ((int)results.size() < n) {
-            results.push_back({node->name, total});
+        if (total > 0) { // Only use names with data for this gender
 
-            if ((int)results.size() == n) {
+            // If vector not full yet
+            if ((int)results.size() < n) {
+                results.push_back({node->name, total});
+
+                if ((int)results.size() == n) {
+                    minIndex = 0;
+                    for (int i = 1; i < n; i++) {
+                        if (results[i].second < results[minIndex].second)
+                            minIndex = i;
+                    }
+                    minCount = results[minIndex].second;
+                }
+            }
+            else if (total > minCount) {
+                // Replace with current minimum
+                results[minIndex] = {node->name, total};
+
                 minIndex = 0;
                 for (int i = 1; i < n; i++) {
                     if (results[i].second < results[minIndex].second)
@@ -138,24 +151,12 @@ void Trie::topNHelper(TrieNode* node, char sex, int n, vector<pair<string, int>>
                 minCount = results[minIndex].second;
             }
         }
-        else if (total > minCount) {
-            // Replace with current minimum
-            results[minIndex] = {node->name, total};
-
-            minIndex = 0;
-            for (int i = 1; i < n; i++) {
-                if (results[i].second < results[minIndex].second)
-                    minIndex = i;
-            }
-            minCount = results[minIndex].second;
-        }
     }
     for (int i = 0; i < 26; i++) {
         topNHelper(node->children[i], sex, n, results, minCount, minIndex);
     }
 }
 
-// destructor for Trie
 void Trie::clear(TrieNode* curr) {
     if (curr == nullptr) {
         return;

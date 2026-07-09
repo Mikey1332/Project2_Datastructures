@@ -123,16 +123,14 @@ vector<pair<string, int>> HashTable::topN(string name, char sex, int n) {
 
     for (const Slot& slot : buckets) {
 
-        // Skip if empty
-        if (!slot.occupied) {
-            continue;;
-        }
-        // Skip if name doesn't not start with prefix
-        if (slot.name.substr(0, name.size()) != name) {
-            continue;
-        }
-        // Get total
-        int total = getAllTimeTotal(slot.name,sex,true);
+        // Skip if empty or name doesn't not start with prefix
+        if (!slot.occupied || (slot.name.substr(0, name.size()) != name)) continue;
+
+        // Get all-time total
+        GenderData* data = getData(slot.name);
+        if (!data) continue;
+        int total = data->getAllTimeTotal(sex);
+        if (total <= 0) continue; // Skip names with no records for this gender
 
         // If vector not full yet
         if ((int)results.size() < n) {
