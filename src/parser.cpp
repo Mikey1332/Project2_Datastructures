@@ -1,6 +1,5 @@
 #include "parser.h"
 
-
 GenderData::GenderData() {
     maleTotal = 0;
     femaleTotal = 0;
@@ -87,10 +86,14 @@ int GenderData::getAllTimeTotal(char gender) {
 // file parsing logic, would work only if exe of main.cpp is located outside of any folder since it is relative. - update if main exe is not.
 
 void GenderData::loadData() {
+    HashTable hash;
+    Trie trie;
     for(int year = 1880; year < 2026; year++) {
         string year_str = to_string(year);
         ifstream file("data/names/yob" + year_str + ".txt");
-
+        /* test write file
+        ofstream outFile("data/names/yob/test.txt");
+        */
         if (!file.is_open()) {
             return; // maybe to add something else for test.cpp but for now this is fine.
         }
@@ -103,8 +106,12 @@ void GenderData::loadData() {
             string countStr;
             if(getline(ss, name, ',') && getline(ss, genderStr, ',') && getline(ss, countStr, ',')) {
                 char gender = genderStr[0];
-                int count = stoi(countStr);
+                int count = stoi(countStr); // cant decide whether making it insert here or in a separate function
                 insert(gender, year, count);
+                hash.insert(name, gender, year, count); 
+                trie.insert(name, gender, year, count);
+
+                // test write: outFile << name + "\n" << endl;
             }
         }
     }

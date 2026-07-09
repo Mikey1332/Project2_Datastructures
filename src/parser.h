@@ -5,6 +5,8 @@
 #include <sstream>
 #include <fstream>
 #include <algorithm> // temporary
+#include "trie.h"
+#include "hash.h"
 using namespace std;
 
 

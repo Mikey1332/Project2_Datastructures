@@ -69,6 +69,8 @@ int main(){
 
 
 	//Do File Parsing:
+	GenderData data;
+	data.loadData(); //load data inserts the data in the tables already... 
 	//Trie:
 	start = chrono::high_resolution_clock::now();
 	//trie.insert(...);
