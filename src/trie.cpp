@@ -2,7 +2,7 @@
 
 // constructor for TrieNode
 Trie::TrieNode::TrieNode() {
-    isName = false;
+    name = "";
     for (int i = 0; i < 26; i++) {
         children[i] = nullptr;
     }
@@ -22,7 +22,7 @@ void Trie::insert(string name, char sex, int year, int count) {
         curr = curr->children[index];
     }
     //Curr is last element, so give it all the data
-    curr->isName = true;
+    curr->name = name;
     curr->data.insert(sex, year, count);
 }
 
@@ -38,7 +38,7 @@ int Trie::getAllTimeTotal(string name, char sex, bool pref) {
     }
     //If it is not for a prefix, return total for exact name
     if (pref == false) {
-        if (curr->isName)
+        if (!curr->name.empty())
             return curr->data.getAllTimeTotal(sex);
         return 0;
     }
@@ -51,7 +51,7 @@ int Trie::getTotalOfPrefixHelper(TrieNode* node, string name, char sex) {
     if (node == nullptr)
         return 0;
     int total = 0;
-    if (node->isName)
+    if (!node->name.empty())
         total+=node->data.getAllTimeTotal(sex);
     for (TrieNode* child : node->children)
         total += getTotalOfPrefixHelper(child, name, sex);
@@ -70,7 +70,7 @@ int Trie::getYearTotal(string name, char sex, int year, bool pref) {
     }
     //If it is not for a prefix, return total for exact name
     if (pref == false) {
-        if (curr->isName)
+        if (!curr->name.empty())
             return curr->data.getCount(sex, year);
         return 0;
     }
@@ -83,29 +83,14 @@ int Trie::getYearTotalOfPrefixHelper(TrieNode* node, string name, char sex, int 
     if (node == nullptr)
         return 0;
     int total = 0;
-    if (node->isName)
+    if (!node->name.empty())
         total+=node->data.getCount(sex, year);
     for (TrieNode* child : node->children)
         total += getYearTotalOfPrefixHelper(child, name, sex, year);
     return total;
 }
 
-// destructor for Trie
-void Trie::clear(TrieNode* curr) {
-    if (curr == nullptr) {
-        return;
-    }
-    for (int i = 0; i < 26; i++) {
-        clear(curr->children[i]);
-    }
-    delete curr;
-}
-
-Trie::~Trie() {
-    clear(root);
-}
-
-vector<pair<string, int>> Trie::topN(string name, char sex, int n, bool pref) {
+vector<pair<string, int>> Trie::topN(string name, char sex, int n) {
 
     vector<pair<string, int>> results;
     int minCount = 0;
@@ -121,11 +106,62 @@ vector<pair<string, int>> Trie::topN(string name, char sex, int n, bool pref) {
         curr = curr->children[index];
     }
 
-    // keep comparing the stuff as the trie travels
-    // see hash.cpp for idea
-    // bedtime i finish tomorrow
+    topNHelper(curr, sex, n, results, minCount, minIndex);
 
-    // sort before returning
+    // sort results before returning
 
     return results;
+}
+
+void Trie::topNHelper(TrieNode* node, char sex, int n, vector<pair<string, int>>& results, int& minCount, int& minIndex) {
+    if (!node)
+        return;
+
+    // If node is name
+    if (!node->name.empty()) {
+        int total = node->data.getAllTimeTotal(sex);
+
+        // If vector not full yet
+        if ((int)results.size() < n) {
+            results.push_back({node->name, total});
+
+            if ((int)results.size() == n) {
+                minIndex = 0;
+                for (int i = 1; i < n; i++) {
+                    if (results[i].second < results[minIndex].second)
+                        minIndex = i;
+                }
+                minCount = results[minIndex].second;
+            }
+        }
+        else if (total > minCount) {
+            // Replace with current minimum
+            results[minIndex] = {node->name, total};
+
+            minIndex = 0;
+            for (int i = 1; i < n; i++) {
+                if (results[i].second < results[minIndex].second)
+                    minIndex = i;
+            }
+            minCount = results[minIndex].second;
+        }
+    }
+    for (int i = 0; i < 26; i++) {
+        topNHelper(node->children[i], sex, n, results, minCount, minIndex);
+    }
+}
+
+// destructor for Trie
+void Trie::clear(TrieNode* curr) {
+    if (curr == nullptr) {
+        return;
+    }
+    for (int i = 0; i < 26; i++) {
+        clear(curr->children[i]);
+    }
+    delete curr;
+}
+
+Trie::~Trie() {
+    clear(root);
 }

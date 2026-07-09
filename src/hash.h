@@ -19,8 +19,7 @@ class HashTable {
     int capacity;
     vector<Slot> buckets;
     // Expected ~100k names, target load factor ~0.5
-
-    GenderData* getData(string name);
+    GenderData* getData(const string &name);
 
 public:
 
@@ -28,17 +27,17 @@ public:
         buckets.resize(capacity);
     }
 
-    // Getters
-    int getFilledSlots();
-    int getCapacity();
-    bool getOccupied(int index);
-    vector<Slot> getBuckets();
+    // Read-only getters
+    int getFilledSlots() const;
+    int getCapacity() const;
+    bool getOccupied(int index) const;
+    const vector<Slot>& getBuckets() const;
 
-    int hash(string name);
+    int hash(const string& name);
     void insert(string name, char sex, int year, int count);
     int getAllTimeTotal(string name, char sex, bool pref);
     int getYearTotal(string name, char sex, int year, bool pref);
-    vector<pair<string, int>> topN(string name, char sex, int n, bool pref);
+    vector<pair<string, int>> topN(string name, char sex, int n);
 };
 
 #endif //COP3530_PROJECT_2_HASH_H

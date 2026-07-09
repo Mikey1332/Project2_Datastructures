@@ -2,23 +2,23 @@
 #include "parser.h"
 using namespace std;
 
-int HashTable::getFilledSlots() {
+int HashTable::getFilledSlots() const {
     return filledSlots;
 }
 
-int HashTable::getCapacity() {
+int HashTable::getCapacity() const {
     return capacity;
 }
 
-bool HashTable::getOccupied(int index) {
+bool HashTable::getOccupied(int index) const {
     return buckets[index].occupied;
 }
 
-vector<HashTable::Slot> HashTable::getBuckets() {
+const vector<HashTable::Slot>& HashTable::getBuckets() const {
     return buckets;
 }
 
-int HashTable::hash(string name) { // this sucks but temporary
+int HashTable::hash(const string& name) { // this sucks but temporary
     long long index = 0; // overflow fix?
     for (char c : name) {
         index += (long long)(tolower(c) - 'a') * (long long)name.length();
@@ -51,7 +51,7 @@ void HashTable::insert(string name, char sex, int year, int count) {
     }
 }
 
-GenderData* HashTable::getData(string name) {
+GenderData* HashTable::getData(const string& name) {
     int index = hash(name);
     for (int i = 0; i < capacity; i++) {
         int probe = (index + i * i) % capacity;
@@ -117,33 +117,21 @@ int HashTable::getYearTotal(string name, char sex, int year, bool pref) {
     return 0;
 }
 
-vector<pair<string, int>> HashTable::topN(string name, char sex, int n, bool pref) {
+vector<pair<string, int>> HashTable::topN(string name, char sex, int n) {
     vector<pair<string, int>> results;
     int minCount = 0;
     int minIndex = 0;
 
-    // what if tied? how to handle that
-    // test this idek if it works at all
-
-    for (Slot slot : buckets) {
+    for (const Slot& slot : buckets) {
 
         // Skip if empty
         if (!slot.occupied) {
             continue;;
         }
-        // Prefix: skip if doesn't start with prefix
-        if (pref) {
-            if (slot.name.substr(0, name.size()) != name) {
-                continue;
-            }
+        // Skip if name doesn't not start with prefix
+        if (slot.name.substr(0, name.size()) != name) {
+            continue;
         }
-        // Full name: skip if not name
-        else if (!pref) {
-            if (slot.name != name) {
-                continue;
-            }
-        }
-
         // Get total
         int total = getAllTimeTotal(slot.name,sex,true);
 
@@ -174,7 +162,7 @@ vector<pair<string, int>> HashTable::topN(string name, char sex, int n, bool pre
         }
     }
 
-    // gotta sort before returning
+    // sort results before returning
 
     return results;
 }

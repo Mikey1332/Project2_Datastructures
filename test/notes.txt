@@ -10,6 +10,7 @@ trying to think of things to test: (feel free to add some)
 upper/lower case query handling (liam Liam and LIAM return same result)
 check if symbols are in SSA name database or only alphabet
 make sure if close to hash capacity the quadratic probing wraps around
+if user in main enters non-letter
 
 exact lookup:
 exact name lookup (total)
