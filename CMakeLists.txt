@@ -27,18 +27,21 @@ add_executable(Main
         src/hash.h
         src/parser.cpp
         src/parser.h
-        )
+)
         
 # These tests can use the Catch2-provided main
 add_executable(Tests
-        test/test.cpp
+        test/test_other.cpp
         src/trie.cpp
         src/trie.h
         src/hash.cpp
         src/hash.h
         src/parser.cpp
         src/parser.h
-        )
+        test/test_trie.cpp
+        test/test_hash.cpp
+        test/test_helper.h
+)
         
 target_link_libraries(Tests PRIVATE Catch2::Catch2WithMain) #link catch to test.cpp file
 # the name here must match that of your testing executable (the one that has test.cpp)

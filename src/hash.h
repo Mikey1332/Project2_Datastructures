@@ -32,12 +32,13 @@ public:
     int getFilledSlots();
     int getCapacity();
     bool getOccupied(int index);
+    vector<Slot> getBuckets();
 
     int hash(string name);
     void insert(string name, char sex, int year, int count);
     int getAllTimeTotal(string name, char sex, bool pref);
     int getYearTotal(string name, char sex, int year, bool pref);
-
+    vector<pair<string, int>> topN(string name, char sex, int n, bool pref);
 };
 
 #endif //COP3530_PROJECT_2_HASH_H

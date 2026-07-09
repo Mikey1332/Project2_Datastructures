@@ -14,6 +14,10 @@ bool HashTable::getOccupied(int index) {
     return buckets[index].occupied;
 }
 
+vector<HashTable::Slot> HashTable::getBuckets() {
+    return buckets;
+}
+
 int HashTable::hash(string name) { // this sucks but temporary
     long long index = 0; // overflow fix?
     for (char c : name) {
@@ -111,5 +115,66 @@ int HashTable::getYearTotal(string name, char sex, int year, bool pref) {
     }
     // If not found
     return 0;
-    return data->getCount(sex,year);
+}
+
+vector<pair<string, int>> HashTable::topN(string name, char sex, int n, bool pref) {
+    vector<pair<string, int>> results;
+    int minCount = 0;
+    int minIndex = 0;
+
+    // what if tied? how to handle that
+    // test this idek if it works at all
+
+    for (Slot slot : buckets) {
+
+        // Skip if empty
+        if (!slot.occupied) {
+            continue;;
+        }
+        // Prefix: skip if doesn't start with prefix
+        if (pref) {
+            if (slot.name.substr(0, name.size()) != name) {
+                continue;
+            }
+        }
+        // Full name: skip if not name
+        else if (!pref) {
+            if (slot.name != name) {
+                continue;
+            }
+        }
+
+        // Get total
+        int total = getAllTimeTotal(slot.name,sex,true);
+
+        // If vector not full yet
+        if ((int)results.size() < n) {
+            results.push_back({slot.name, total});
+
+            // After vec is N-sized, find the minimum
+            if ((int)results.size() == n) {
+                minIndex = 0;
+                for (int i = 1; i < n; i++) {
+                    if (results[i].second < results[minIndex].second)
+                        minIndex = i;
+                }
+                minCount = results[minIndex].second;
+            }
+
+        } else if (total > minCount) {
+            // Replace with current minimum
+            results[minIndex] = {slot.name, total};
+
+            minIndex = 0;
+            for (int i = 1; i < n; i++) {
+                if (results[i].second < results[minIndex].second)
+                    minIndex = i;
+            }
+            minCount = results[minIndex].second;
+        }
+    }
+
+    // gotta sort before returning
+
+    return results;
 }
