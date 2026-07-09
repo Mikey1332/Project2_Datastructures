@@ -23,7 +23,7 @@ class HashTable {
 
 public:
 
-    HashTable() : base(31), filledSlots(0), capacity(200003) {
+    HashTable() : base(131), filledSlots(0), capacity(200003) {
         buckets.resize(capacity);
     }
 
@@ -33,7 +33,7 @@ public:
     bool getOccupied(int index) const;
     const vector<Slot>& getBuckets() const;
 
-    int hash(const string& name);
+    unsigned int hash(const string& name);
     void insert(string name, char sex, int year, int count);
     int getAllTimeTotal(string name, char sex, bool pref);
     int getYearTotal(string name, char sex, int year, bool pref);

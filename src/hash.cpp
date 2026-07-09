@@ -18,12 +18,12 @@ const vector<HashTable::Slot>& HashTable::getBuckets() const {
     return buckets;
 }
 
-int HashTable::hash(const string& name) { // this sucks but temporary
-    long long index = 0; // overflow fix?
+unsigned int HashTable::hash(const string& name) {
+    long long h = 0; // Fixes overflow
     for (char c : name) {
-        index += (long long)(tolower(c) - 'a') * (long long)name.length();
+        h = ((h * base) + (tolower(c) - 'a' + 1)) % capacity;
     }
-    return (int)index % base;
+    return (unsigned int)(h); // Convert back to unsigned int
 }
 
 void HashTable::insert(string name, char sex, int year, int count) {
@@ -94,8 +94,7 @@ int HashTable::getAllTimeTotal(string name, char sex, bool pref) {
                 // Skip to next buckets[i]
             }
 
-            GenderData* data = getData(buckets[i].name);
-            total += data->getAllTimeTotal(sex);
+            total += buckets[i].data.getAllTimeTotal(sex);
         }
 
         return total;
@@ -163,6 +162,10 @@ vector<pair<string, int>> HashTable::topN(string name, char sex, int n) {
     }
 
     // sort results before returning
+    // temporarily use sort()
+    sort(results.begin(), results.end(), [](const pair<string,int>& a, const pair<string,int>& b) {
+         return a.second > b.second;
+     });
 
     return results;
 }

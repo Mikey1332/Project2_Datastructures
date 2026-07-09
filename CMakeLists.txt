@@ -39,9 +39,9 @@ add_executable(Tests
         src/parser.cpp
         src/parser.h
         test/test_trie.cpp
-        test/test_hashtable.cpp
+        test/test_hash.cpp
         test/test_helper.h
-        test/test_genderdata.cpp
+        test/test_gender.cpp
 )
         
 target_link_libraries(Tests PRIVATE Catch2::Catch2WithMain) #link catch to test.cpp file

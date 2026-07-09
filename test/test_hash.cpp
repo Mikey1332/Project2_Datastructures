@@ -3,19 +3,18 @@
 TEST_CASE("Hash function hashes correctly", "[hash]") {
     HashTable hash;
 
-    string name1 = "A";
-    string name2 = "Ba";
-    string name3 = "Cat";
-    string name4 = "Dolly";
-    string name5 = "Verylongname";
-    string name6 = "Zzzzzzzzzzzz"; // should be large number before getting mod
-
-    REQUIRE(hash.hash(name6) == 0); // should be FALSE for now until i make better hash
-    REQUIRE(hash.hash(name2) == 0);
-    REQUIRE(hash.hash(name3) == 0);
-    REQUIRE(hash.hash(name4) == 0);
-    REQUIRE(hash.hash(name5) == 0);
-    REQUIRE(hash.hash(name1) == 0);
+    REQUIRE(hash.hash("A") == 1);
+    REQUIRE(hash.hash("B") == 2);
+    REQUIRE(hash.hash("Z") == 26);
+    REQUIRE(hash.hash("a") != hash.hash("aa"));
+    REQUIRE(hash.hash("AB") != hash.hash("BA"));
+    REQUIRE(hash.hash("Emma") != hash.hash("Emily"));
+    REQUIRE(hash.hash("Sam") != hash.hash("Samuel"));
+    REQUIRE(hash.hash("Albert") != hash.hash("Liam"));
+    REQUIRE(hash.hash("Emma") != hash.hash("Emily"));
+    REQUIRE(hash.hash("Bob") != hash.hash("Benjamin"));
+    REQUIRE(hash.hash("Verylongname") != hash.hash("Verylongnamg"));
+    REQUIRE(hash.hash("zzzzzzzzzzzzzzzzzzzzzzzz") <= 200002);
 }
 
 TEST_CASE("Insert one line into hash table", "[hash]") {
@@ -31,6 +30,17 @@ TEST_CASE("Insert one line into hash table", "[hash]") {
 
     REQUIRE(hash.getFilledSlots() == 1); // Filled Slots updated
     REQUIRE(hash.getAllTimeTotal(name,sex,false) == 500);
+}
+
+TEST_CASE("Collision resolution", "[hash]") {
+    HashTable hash;
+    hash.insert("tp", 'M', 1999, 10);
+    hash.insert("aiaa", 'M', 2020, 100);
+    // Before hashing tp and aiaa = 2636
+    REQUIRE(hash.getBuckets()[2636].name == "tp");
+    REQUIRE(hash.getBuckets()[2636].name != "aiaa");
+    // (2636 + 1*1) % 200003 = 2637;
+    REQUIRE(hash.getBuckets()[2637].name == "aiaa");
 }
 
 TEST_CASE("Hash filledSlots matches manually calculated occupied slots","[hash]") {
