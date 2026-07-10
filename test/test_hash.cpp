@@ -127,22 +127,22 @@ TEST_CASE("Hash getAllTimeTotal M and F for same name are separate for prefix se
     REQUIRE(hash.getAllTimeTotal("Sam", 'F', true) == 850);
 }
 
-TEST_CASE("Hash topN returns correct number of results", "[hash][topN]") {
+TEST_CASE("Hash topN returns correct number of results all-time", "[all-time][hash][topN]") {
     HashTable hash = makeTestHash();
-    auto results = hash.topN("B", 'M', 3);
+    auto results = hash.topN("B", 'M', -1, 3);
     REQUIRE(results.size() == 3);
 }
 
-TEST_CASE("Hash topN results are sorted descending by count", "[hash][topN]") {
+TEST_CASE("Hash topN results are sorted descending by count all-time", "[all-time][hash][topN]") {
     HashTable hash = makeTestHash();
-    auto results = hash.topN("B", 'M', 3);
+    auto results = hash.topN("B", 'M',  -1, 3);
     for (int i = 0; i < (int)results.size() - 1; i++)
         REQUIRE(results[i].second >= results[i+1].second);
 }
 
-TEST_CASE("Hash topN returns correct top 3 names", "[hash][topN]") {
+TEST_CASE("Hash topN returns correct top 3 names all-time", "[all-time][hash][topN]") {
     HashTable hash = makeTestHash();
-    auto results = hash.topN("B", 'M', 3);
+    auto results = hash.topN("B", 'M',  -1, 3);
     REQUIRE(results[0].first == "Bob");
     REQUIRE(results[0].second == 1580);
     REQUIRE(results[1].first == "Benjamin");
@@ -151,12 +151,12 @@ TEST_CASE("Hash topN returns correct top 3 names", "[hash][topN]") {
     REQUIRE(results[2].second == 250);
 }
 
-TEST_CASE("Hash topN filters by gender", "[gender][hash][topN]") {
+TEST_CASE("Hash topN filters by gender all-time", "[all-time][gender][hash][topN]") {
     HashTable hash = makeTestHash();
     vector<pair<string,int>> results;
 
     SECTION("Male only") {
-        results = hash.topN("Sam", 'M', 5);
+        results = hash.topN("Sam", 'M',  -1, 5);
 
         REQUIRE(results.size() == 2); // Sam and Samuel
         REQUIRE(results[0].first == "Samuel"); // 950
@@ -171,7 +171,7 @@ TEST_CASE("Hash topN filters by gender", "[gender][hash][topN]") {
     }
 
     SECTION("Female only") {
-        results = hash.topN("Sam", 'F', 5);
+        results = hash.topN("Sam", 'F',  -1, 5);
 
         REQUIRE(results.size() == 2); // Sam and Samantha
         REQUIRE(results[0].first == "Samantha"); // 700
@@ -186,7 +186,7 @@ TEST_CASE("Hash topN filters by gender", "[gender][hash][topN]") {
     }
 
     SECTION("All genders") {
-        results = hash.topN("Sam", 'A', 5);
+        results = hash.topN("Sam", 'A',  -1, 5);
 
         REQUIRE(results.size() == 3); // Sam Samuel Samantha
 
@@ -210,31 +210,23 @@ TEST_CASE("Hash topN filters by gender", "[gender][hash][topN]") {
     }
 }
 
-TEST_CASE("Hash topN, N more than actual results, returns only results", "[hash][topN]") {
+TEST_CASE("Hash topN, N more than num results, returns only results all-time", "[all-time][hash][topN]") {
     HashTable hash = makeTestHash();
-    auto results = hash.topN("B", 'M', 20);
+    auto results = hash.topN("B", 'M',  -1, 20);
     // 5 names start with B
     REQUIRE(results.size() == 5);
 }
 
-TEST_CASE("Hash topN with no matching prefix returns empty", "[hash][topN]") {
+TEST_CASE("Hash topN with no matching prefix returns empty all-time", "[all-time][hash][topN]") {
     HashTable hash = makeTestHash();
-    auto results = hash.topN("Qzx", 'M', 10);
+    auto results = hash.topN("Qzx", 'M', -1,  10);
     REQUIRE(results.empty());
 }
 
-TEST_CASE("Hash topN with N=1 returns only the single highest", "[hash][topN]") {
+TEST_CASE("Hash topN with N=1 returns only the single highest all-time", "[all-time][hash][topN]") {
     HashTable hash = makeTestHash();
-    auto results = hash.topN("B", 'M', 1);
+    auto results = hash.topN("B", 'M', -1,  1);
     REQUIRE(results.size() == 1);
     REQUIRE(results[0].first == "Bob");
     REQUIRE(results[0].second == 1580);
 }
-
-// wait was topN supposed to filter by year?
-//
-// TEST_CASE("Hash topN counts reflect all-time totals not single year", "[all-time][hash][topN]") {
-//     HashTable hash = makeTestHash();
-//     auto results = hash.topN("B", 'M', 1);
-//     REQUIRE(results[0].second == 1180);
-// }

@@ -25,8 +25,8 @@ add_executable(Main
         src/trie.h
         src/hash.cpp
         src/hash.h
-        src/parser.cpp
-        src/parser.h
+        src/gender.cpp
+        src/gender.h
         src/load.h
         src/load.cpp
 )
@@ -38,8 +38,8 @@ add_executable(Tests
         src/trie.h
         src/hash.cpp
         src/hash.h
-        src/parser.cpp
-        src/parser.h
+        src/gender.cpp
+        src/gender.h
         test/test_trie.cpp
         test/test_hash.cpp
         test/test_helper.h
