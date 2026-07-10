@@ -27,6 +27,8 @@ add_executable(Main
         src/hash.h
         src/parser.cpp
         src/parser.h
+        src/load.h
+        src/load.cpp
 )
         
 # These tests can use the Catch2-provided main

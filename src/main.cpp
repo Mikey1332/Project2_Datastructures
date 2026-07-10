@@ -2,6 +2,7 @@
 #include <iomanip>
 #include "trie.h"
 #include "hash.h"
+#include "load.h"
 #include <chrono>
 using namespace std;
 
@@ -69,17 +70,19 @@ int main(){
 
 
 	//Do File Parsing:
-	GenderData data;
-	data.loadData(); //load data inserts the data in the tables already... 
+	Parser parser;
+
 	//Trie:
 	start = chrono::high_resolution_clock::now();
 	//trie.insert(...);
+	parser.insertTrie(trie);
 	end = chrono::high_resolution_clock::now();
 	// trieInsertTime = chrono::duration_cast<chrono::milliseconds>(end - start).count();
 
 	//Hash:
 	start = chrono::high_resolution_clock::now();
 	//hash.insert(...);
+	parser.insertHash(hash);
 	end = chrono::high_resolution_clock::now();
 	// hashInsertTime = chrono::duration_cast<chrono::milliseconds>(end - start).count();
 

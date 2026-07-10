@@ -8,9 +8,7 @@
 
 using namespace std;
 
-
 class GenderData {
-
     int maleTotal = 0;
     int femaleTotal = 0;
     vector<pair<int,int>> M = {};
@@ -26,7 +24,7 @@ public:
     int getCount(char gender, int year);
     void insert(char gender, int year, int count);
     int getAllTimeTotal(char gender);
-    void loadData();
+    // void loadData();
 };
 
 #endif //COP3530_PROJECT_2_PARSER_H

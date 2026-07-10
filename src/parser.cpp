@@ -88,10 +88,9 @@ int GenderData::getAllTimeTotal(char gender) {
 
 // file parsing logic, would work only if exe of main.cpp is located outside of any folder since it is relative. - update if main exe is not.
 // rn the main.exe file path is being sent into cmake-build-debug, so its rn: ../data/names; but if someone moves it, this wont work.
+/*
 void GenderData::loadData() {
-    HashTable hash;
-    Trie trie;
-    ofstream outFile("../test/test_textFromData.txt"); // for test purporses
+    ofstream outFile("../test/test_textFromData.txt"); // for test purposes
     for(int year = 1880; year < 2026; year++) {
         string year_str = to_string(year);
         ifstream file("../data/names/yob" + year_str + ".txt");
@@ -108,13 +107,13 @@ void GenderData::loadData() {
             string countStr;
             if(getline(ss, name, ',') && getline(ss, genderStr, ',') && getline(ss, countStr, ',')) {
                 char gender = genderStr[0];
-                int count = stoi(countStr); // cant decide whether making it insert here or in a separate function
+                int count = stoi(countStr);
                 insert(gender, year, count);
-                hash.insert(name, gender, year, count);
-                trie.insert(name, gender, year, count);
-
                 outFile << name + ", " + genderStr << ", " << count << ", " << year << endl;
             }
         }
     }
 }
+
+outdated/just in case
+*/
