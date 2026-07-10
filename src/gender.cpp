@@ -1,4 +1,4 @@
-#include "parser.h"
+#include "gender.h"
 #include "trie.h"
 #include "hash.h"
 #include <iostream>
@@ -8,7 +8,7 @@ GenderData::GenderData() {
     femaleTotal = 0;
 }
 
-vector<pair<int, int>> GenderData::get(char gender) {
+vector<pair<int, int>> GenderData::get(char gender) const{
     if (gender == 'M')
         return M;
     if (gender == 'F')
@@ -20,7 +20,7 @@ vector<pair<int, int>> GenderData::get(char gender) {
     return combined;
 }
 
-int GenderData::getCount(char gender, int year) {
+int GenderData::getCount(char gender, int year) const {
     //Binary Search - O(log(n)) where n is number of years
     if (gender == 'M')
         return getCountHelper(M, year);
@@ -30,7 +30,7 @@ int GenderData::getCount(char gender, int year) {
     return getCountHelper(M, year) + getCountHelper(F, year);
 }
 
-int GenderData::getCountHelper(vector<pair<int, int>> &allYears, int year) {
+int GenderData::getCountHelper(const vector<pair<int, int>> &allYears, int year) const {
     //Binary Search - O(log(n)) where n is number of years
     int first = 0;
     int last = allYears.size()-1;
@@ -85,7 +85,7 @@ void GenderData::insertInOrder(vector<pair<int, int>> &allYears, int year, int c
     allYears.insert(allYears.begin() + first, {year, count});
 }
 
-int GenderData::getAllTimeTotal(char gender) {
+int GenderData::getAllTimeTotal(char gender) const{
     if (gender == 'M')
         return maleTotal;
     if (gender == 'F')

@@ -1,7 +1,7 @@
 #ifndef COP3530_PROJECT_2_HASH_H
 #define COP3530_PROJECT_2_HASH_H
 #include <array>
-#include "parser.h"
+#include "gender.h"
 using namespace std;
 
 class HashTable {
@@ -20,6 +20,7 @@ class HashTable {
     vector<Slot> buckets;
     // Expected ~100k names, target load factor ~0.5
     GenderData* getData(const string &name);
+    string properCase(const string &s);
 
 public:
 

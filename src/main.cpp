@@ -319,7 +319,7 @@ int main(){
 
 			cout << "---------------- Trie ----------------" << endl;
 			cout << "The year-by-year trend of \"" << name << "\" (" << sex << ") is as follows:" << endl;
-			for (int i = 0; i < yearTrends.size(); i++) {
+			for (int i = 0; i < (int)yearTrends.size(); i++) {
 				cout << yearTrends[i].first << ":  " << yearTrends[i].second << endl;
 			}
 			cout << "Time: " << elapsed.count() << " microseconds" << endl;
@@ -340,7 +340,7 @@ int main(){
 			// cout << "Time: " << elapsed.count() << " microseconds" << endl;
 			// cout << endl;
 			//
-			hashYearByYearBirthTimes.push_back(elapsed.count());
+			// hashYearByYearBirthTimes.push_back(elapsed.count());
 		}
 		else if (selection == 5) {
 			// cout << "You chose total births of prefix \"" << name << "-\" (" << sex << ") for all time." << endl;
@@ -448,7 +448,7 @@ int main(){
 
 			cout << "---------------- Trie ----------------" << endl;
 			cout << "The year-by-year trend of prefix \"" << name << "-\" (" << sex << ") is as follows:" << endl;
-			for (int i = 0; i < yearTrends.size(); i++) {
+			for (int i = 0; i < (int)yearTrends.size(); i++) {
 				cout << yearTrends[i].first << ":  " << yearTrends[i].second << endl;
 			}
 			cout << "Time: " << elapsed.count() << " microseconds" << endl;

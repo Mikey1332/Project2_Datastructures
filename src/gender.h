@@ -15,16 +15,20 @@ class GenderData {
     vector<pair<int,int>> F = {};
 
     void insertInOrder(vector<pair<int, int>> &allYears, int year, int count);
-    int getCountHelper(vector<pair<int, int>> &allYears, int year);
+    int getCountHelper(const vector<pair<int, int>> &allYears, int year) const;
 
 public:
 
     GenderData();
-    vector<pair<int,int>> get(char gender);
-    int getCount(char gender, int year);
+    // vector<pair<int,int>> get(char gender);
+    // int getCount(char gender, int year);
+    // void insert(char gender, int year, int count);
+    // int getAllTimeTotal(char gender);
+
+    vector<pair<int,int>> get(char gender) const;
+    int getCount(char gender, int year) const;
     void insert(char gender, int year, int count);
-    int getAllTimeTotal(char gender);
-    // void loadData();
+    int getAllTimeTotal(char gender) const;
 };
 
 #endif //COP3530_PROJECT_2_PARSER_H

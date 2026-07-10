@@ -1,6 +1,6 @@
 #ifndef COP3530_PROJECT_2_TRIE_H
 #define COP3530_PROJECT_2_TRIE_H
-#include "parser.h"
+#include "gender.h"
 using namespace std;
 
 

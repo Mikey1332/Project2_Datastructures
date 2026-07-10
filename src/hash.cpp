@@ -1,6 +1,16 @@
 #include "hash.h"
-#include "parser.h"
+#include "gender.h"
 using namespace std;
+
+string HashTable::properCase(const string& s) {
+    if (s.empty()) return s;
+
+    string result = s;
+    for (size_t i = 0; i < result.size(); i++) {
+        result[i] = (i == 0) ? toupper(result[i]) : tolower(result[i]);
+    }
+    return result;
+}
 
 int HashTable::getFilledSlots() const {
     return filledSlots;
@@ -27,24 +37,20 @@ unsigned int HashTable::hash(const string& name) {
 }
 
 void HashTable::insert(string name, char sex, int year, int count) {
-    int index = hash(name);
+    string key = properCase(name);
+    int index = hash(key);
 
     for (int i = 0; i < capacity; i++) {
-        // Quadratic probing
         int probe = (index + i * i) % capacity;
 
-        // If unoccupied
         if (!buckets[probe].occupied) {
-
-            buckets[probe].name = name;
+            buckets[probe].name = key;
             buckets[probe].data.insert(sex, year, count);
             buckets[probe].occupied = true;
             filledSlots++;
             return;
         }
-        // If name found
-        if (buckets[probe].name == name) {
-            // Update data
+        if (buckets[probe].name == key) {
             buckets[probe].data.insert(sex, year, count);
             return;
         }
@@ -52,12 +58,13 @@ void HashTable::insert(string name, char sex, int year, int count) {
 }
 
 GenderData* HashTable::getData(const string& name) {
-    int index = hash(name);
+    string key = properCase(name);
+    int index = hash(key);
     for (int i = 0; i < capacity; i++) {
         int probe = (index + i * i) % capacity;
         if (!buckets[probe].occupied)
             return nullptr;
-        if (buckets[probe].name == name)
+        if (buckets[probe].name == key)
             return &buckets[probe].data;
     }
     return nullptr;
@@ -67,7 +74,7 @@ GenderData* HashTable::getData(const string& name) {
 int HashTable::getAllTimeTotal(string name, char sex, bool pref) {
 
     if (pref) {
-        string prefix = name;
+        string prefix = properCase(name);
         int total = 0;
 
         for (int i = 0; i < capacity; i++) {
@@ -108,18 +115,41 @@ int HashTable::getAllTimeTotal(string name, char sex, bool pref) {
 }
 
 int HashTable::getYearTotal(string name, char sex, int year, bool pref) {
-    GenderData* data = getData(name);
-    if (data) { // If found
-        return data->getCount(sex,year);
+    if (pref) {
+        string prefix = properCase(name);
+        int total = 0;
+
+        for (int i = 0; i < capacity; i++) {
+            if (!buckets[i].occupied) continue;
+            if ((int)buckets[i].name.length() < (int)prefix.length()) continue;
+
+            bool matches = true;
+            for (int j = 0; j < (int)prefix.length(); j++) {
+                if (tolower(buckets[i].name[j]) != tolower(prefix[j])) {
+                    matches = false;
+                    break;
+                }
+            }
+            if (!matches) continue;
+
+            total += buckets[i].data.getCount(sex, year);
+        }
+
+        return total;
     }
-    // If not found
-    return 0;
+    // Else exact name search
+    GenderData* data = getData(name);
+    if (!data) {
+        return 0;
+    }
+    return data->getCount(sex, year);
 }
 
 vector<pair<string, int>> HashTable::topN(string name, char sex, int year, int n) {
     if (n <= 0)
         return {};
 
+    string prefix = properCase(name);
     vector<pair<string, int>> results;
     int minCount = 0;
     int minIndex = 0;
@@ -127,17 +157,17 @@ vector<pair<string, int>> HashTable::topN(string name, char sex, int year, int n
     for (const Slot& slot : buckets) {
 
         // Skip if empty or name doesn't not start with prefix
-        if (!slot.occupied || (slot.name.substr(0, name.size()) != name)) continue;
+        if (!slot.occupied || (slot.name.substr(0, prefix.size()) != prefix)) continue;
 
         // Get total
-        GenderData* data = getData(slot.name);
+        const GenderData& data = slot.data;
         int total;
-        if (!data) continue;
+
         //If all time
         if (year == -1)
-            total = data->getAllTimeTotal(sex);
+            total = data.getAllTimeTotal(sex);
         else //If year specific
-            total = data->getCount(sex, year);
+            total = data.getCount(sex, year);
         if (total <= 0) continue; // Skip names with no records for this gender
 
         // If vector not full yet
@@ -176,6 +206,6 @@ vector<pair<string, int>> HashTable::topN(string name, char sex, int year, int n
     return results;
 }
 
-vector<pair<int,int>> yearToYearTrend(string name, char sex, bool pref) {
+vector<pair<int,int>> HashTable::yearToYearTrend(string name, char sex, bool pref) {
     return {};
 }
