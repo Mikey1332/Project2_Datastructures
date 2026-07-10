@@ -52,7 +52,7 @@ int Trie::getTotalOfPrefixHelper(TrieNode* node, char sex) {
     if (!node->name.empty())
         total+=node->data.getAllTimeTotal(sex);
     for (TrieNode* child : node->children) {
-        if (child) // Only do it if child!
+        if (child) // Only do it if child
             total += getTotalOfPrefixHelper(child, sex);
     }
     return total;
