@@ -115,5 +115,5 @@ void GenderData::loadData() {
     }
 }
 
-outdated/just in case
+outdated, was better to make a separate struct in load.h and load.cpp so that way its possible to have to separate insert functions and testing their time for each structure.
 */

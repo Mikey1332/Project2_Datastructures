@@ -19,7 +19,7 @@ Parser::Parser() {
             string genderStr;
             string countStr;
             if(getline(ss, name, ',') && getline(ss, genderStr, ',') && getline(ss, countStr, ',')) {
-                outFile << name + ", " + genderStr << ", " << countStr << ", " << year_str << endl;
+                outFile << name + "," + genderStr << "," << countStr << "," << year_str << endl;
             }
         }
     }

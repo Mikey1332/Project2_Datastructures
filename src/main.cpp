@@ -288,7 +288,7 @@ int main(){
 			elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
 
 			cout << "---------------- Hash ----------------" << endl;
-			// cout << "There are [" << total << "] births for \"" << name << "\"  (" << sex << ") from " << year << " to " << year2 << "." << endl;
+			cout << "There are [" << total << "] births for \"" << name << "\"  (" << sex << ") from " << year << " to " << year2 << "." << endl;
 			cout << "Time: " << elapsed.count() << " milliseconds" << endl;
 			cout << endl;
 
