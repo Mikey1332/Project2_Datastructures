@@ -427,7 +427,7 @@ int main(){
 			if (year != -1)
 				cout << " in " << year;
 			cout << " are as follows:" << endl;
-			for (int i = 0; i < topN.size(); i++) {
+			for (size_t i = 0; i < topN.size(); i++) {
 				cout << i+1 << ". " << topN[i].first << " " << topN[i].second << endl;
 			}
 			cout << "Time: " << elapsed.count() << " microseconds" << endl;
@@ -447,7 +447,7 @@ int main(){
 			if (year != -1)
 				cout << " in " << year;
 			cout << " are as follows:" << endl;
-			for (int i = 0; i < topN.size(); i++) {
+			for (size_t i = 0; i < topN.size(); i++) {
 				cout << i+1 << ". " << topN[i].first << " " << topN[i].second << endl;
 			}
 			cout << "Time: " << elapsed.count() << " microseconds" << endl;
