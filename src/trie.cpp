@@ -42,10 +42,10 @@ int Trie::getAllTimeTotal(string name, char sex, bool pref) {
         return 0;
     }
     //If it is a prefix
-    return getTotalOfPrefixHelper(curr, name, sex);
+    return getTotalOfPrefixHelper(curr, sex);
 }
 
-int Trie::getTotalOfPrefixHelper(TrieNode* node, string name, char sex) {
+int Trie::getTotalOfPrefixHelper(TrieNode* node, char sex) {
     //This goes through each letter for each node, even if it's not a child
     if (node == nullptr)
         return 0;
@@ -53,7 +53,7 @@ int Trie::getTotalOfPrefixHelper(TrieNode* node, string name, char sex) {
     if (!node->name.empty())
         total+=node->data.getAllTimeTotal(sex);
     for (TrieNode* child : node->children)
-        total += getTotalOfPrefixHelper(child, name, sex);
+        total += getTotalOfPrefixHelper(child, sex);
     return total;
 }
 
@@ -74,10 +74,10 @@ int Trie::getYearTotal(string name, char sex, int year, bool pref) {
         return 0;
     }
     //If it is a prefix
-    return getYearTotalOfPrefixHelper(curr, name, sex, year);
+    return getYearTotalOfPrefixHelper(curr, sex, year);
 }
 
-int Trie::getYearTotalOfPrefixHelper(TrieNode* node, string name, char sex, int year) {
+int Trie::getYearTotalOfPrefixHelper(TrieNode* node, char sex, int year) {
     //This goes through each letter for each node, even if it's not a child
     if (node == nullptr)
         return 0;
@@ -85,7 +85,7 @@ int Trie::getYearTotalOfPrefixHelper(TrieNode* node, string name, char sex, int 
     if (!node->name.empty())
         total+=node->data.getCount(sex, year);
     for (TrieNode* child : node->children)
-        total += getYearTotalOfPrefixHelper(child, name, sex, year);
+        total += getYearTotalOfPrefixHelper(child, sex, year);
     return total;
 }
 
@@ -161,6 +161,49 @@ void Trie::topNHelper(TrieNode* node, char sex, int year, int n, vector<pair<str
     for (int i = 0; i < 26; i++) {
         topNHelper(node->children[i], sex, year, n, results, minCount, minIndex);
     }
+}
+
+vector<pair<int,int>> Trie::yearToYearTrend(string name, char sex, bool pref) {
+    vector<pair<int,int>> results = {};
+    if (root == nullptr)
+        return {};
+    TrieNode* curr = root;
+    for (int i  = 0; i < int(name.length()); i++) {
+        int index = tolower(name[i]) - 'a';
+        curr = curr->children[index];
+        if (curr == nullptr)
+            return {};
+    }
+    //If it is not for a prefix, return total for exact name
+    if (!pref) {
+        if (!curr->name.empty())
+            return curr->data.get(sex);
+        return {};
+    }
+    //If it is a prefix
+    yearToYearTrendHelper(curr, sex, results);
+    return results;
+}
+
+void Trie::yearToYearTrendHelper(TrieNode* node, char sex, vector<pair<int, int>>& results) {
+    if (node == nullptr)
+        return;
+    if (!node->name.empty()) {
+        for (const pair<int, int>& p: node->data.get(sex)) {
+            bool found = false;
+            for (pair<int, int>& result : results) {
+                if (p.first == result.first) {
+                    result.second += p.second;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+                results.push_back(p);
+        }
+    }
+    for (TrieNode* child : node->children)
+        yearToYearTrendHelper(child, sex, results);
 }
 
 void Trie::clear(TrieNode* curr) {

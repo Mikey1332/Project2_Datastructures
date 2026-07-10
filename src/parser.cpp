@@ -8,8 +8,16 @@ GenderData::GenderData() {
     femaleTotal = 0;
 }
 
-vector<pair<int, int> > &GenderData::get(char gender) {
-    return gender == 'M' ? M : F; // getter function
+vector<pair<int, int>> &GenderData::get(char gender) {
+    if (gender == 'M')
+        return M;
+    if (gender == 'F')
+        return F;
+    vector<pair<int, int>> combined = M;
+    for (pair<int, int> p : F) {
+        combined.push_back(p);
+    }
+    return combined;
 }
 
 int GenderData::getCount(char gender, int year) {
