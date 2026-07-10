@@ -89,7 +89,7 @@ int Trie::getYearTotalOfPrefixHelper(TrieNode* node, string name, char sex, int 
     return total;
 }
 
-vector<pair<string, int>> Trie::topN(string name, char sex, int n) {
+vector<pair<string, int>> Trie::topN(string name, char sex, int year, int n) {
     if (n <= 0)
         return {};
 
@@ -107,7 +107,7 @@ vector<pair<string, int>> Trie::topN(string name, char sex, int n) {
         curr = curr->children[index];
     }
 
-    topNHelper(curr, sex, n, results, minCount, minIndex);
+    topNHelper(curr, sex, year, n, results, minCount, minIndex);
 
     // sort results before returning
     // temporarily use sort()
@@ -118,13 +118,17 @@ vector<pair<string, int>> Trie::topN(string name, char sex, int n) {
     return results;
 }
 
-void Trie::topNHelper(TrieNode* node, char sex, int n, vector<pair<string, int>>& results, int& minCount, int& minIndex) {
+void Trie::topNHelper(TrieNode* node, char sex, int year, int n, vector<pair<string, int>>& results, int& minCount, int& minIndex) {
     if (!node)
         return;
-
+    int total = 0;
     // If node is name
     if (!node->name.empty()) {
-        int total = node->data.getAllTimeTotal(sex);
+        //If all time
+        if (year == -1)
+            total = node->data.getAllTimeTotal(sex);
+        else
+            total = node->data.getCount(sex, year);
 
         if (total > 0) { // Only use names with data for this gender
 
@@ -155,7 +159,7 @@ void Trie::topNHelper(TrieNode* node, char sex, int n, vector<pair<string, int>>
         }
     }
     for (int i = 0; i < 26; i++) {
-        topNHelper(node->children[i], sex, n, results, minCount, minIndex);
+        topNHelper(node->children[i], sex, year, n, results, minCount, minIndex);
     }
 }
 

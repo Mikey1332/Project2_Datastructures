@@ -19,7 +19,7 @@ class Trie {
 
     int getTotalOfPrefixHelper(TrieNode* node, string name, char sex);
     int getYearTotalOfPrefixHelper(TrieNode* node, string name, char sex, int year);
-    void topNHelper(TrieNode *node, char sex, int n, vector<pair<string, int>> &results, int &minCount, int &minIndex);
+    void topNHelper(TrieNode *node, char sex, int year, int n, vector<pair<string, int>> &results, int &minCount, int &minIndex);
 
 public:
 
@@ -30,7 +30,7 @@ public:
     void print(int year); // just a basic print function for maybe all names + gender in a year with their count.
     int getAllTimeTotal(string name, char sex, bool pref);
     int getYearTotal(string name, char sex, int year, bool pref);
-    vector<pair<string, int>> topN(string name, char sex, int n);
+    vector<pair<string, int>> topN(string name, char sex, int year, int n);
 
     // needed a destructor
     ~Trie();

@@ -116,7 +116,7 @@ int HashTable::getYearTotal(string name, char sex, int year, bool pref) {
     return 0;
 }
 
-vector<pair<string, int>> HashTable::topN(string name, char sex, int n) {
+vector<pair<string, int>> HashTable::topN(string name, char sex, int year, int n) {
     if (n <= 0)
         return {};
 
@@ -129,10 +129,15 @@ vector<pair<string, int>> HashTable::topN(string name, char sex, int n) {
         // Skip if empty or name doesn't not start with prefix
         if (!slot.occupied || (slot.name.substr(0, name.size()) != name)) continue;
 
-        // Get all-time total
+        // Get total
         GenderData* data = getData(slot.name);
+        int total;
         if (!data) continue;
-        int total = data->getAllTimeTotal(sex);
+        //If all time
+        if (year == -1)
+            total = data->getAllTimeTotal(sex);
+        else //If year specific
+            total = data->getCount(sex, year);
         if (total <= 0) continue; // Skip names with no records for this gender
 
         // If vector not full yet

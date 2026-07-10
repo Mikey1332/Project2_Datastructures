@@ -412,7 +412,7 @@ int main(){
 			vector<pair<string, int>> topN;
 
 			start = chrono::high_resolution_clock::now();
-			topN = trie.topN(name, sex, N);
+			topN = trie.topN(name, sex, year, N);
 			end = chrono::high_resolution_clock::now();
 			elapsed = chrono::duration_cast<chrono::microseconds>(end - start);
 
@@ -432,7 +432,7 @@ int main(){
 			topN.clear();
 
 			start = chrono::high_resolution_clock::now();
-			topN = hash.topN(name, sex, N);
+			topN = hash.topN(name, sex, year, N);
 			end = chrono::high_resolution_clock::now();
 			elapsed = chrono::duration_cast<chrono::microseconds>(end - start);
 
