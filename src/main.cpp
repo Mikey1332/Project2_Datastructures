@@ -283,7 +283,7 @@ int main(){
 			trieYearRangeBirthTimes.push_back(elapsed.count());
 
 			cout << "---------------- Trie ----------------" << endl;
-			cout << "There are [" << total << "] births for \"" << name << "\"  (" << sex << ") from " << year << " to " << year2 << "." << endl;
+			cout << "There are [" << total << "] births for \"" << name << "\" (" << sex << ") from " << year << " to " << year2 << "." << endl;
 			cout << "Time: " << elapsed.count() << " microseconds" << endl;
 			cout << endl;
 
@@ -296,7 +296,7 @@ int main(){
 			elapsed = chrono::duration_cast<chrono::microseconds>(end - start);
 
 			cout << "---------------- Hash ----------------" << endl;
-			cout << "There are [" << total << "] births for \"" << name << "\"  (" << sex << ") from " << year << " to " << year2 << "." << endl;
+			cout << "There are [" << total << "] births for \"" << name << "\" (" << sex << ") from " << year << " to " << year2 << "." << endl;
 			cout << "Time: " << elapsed.count() << " microseconds" << endl;
 			cout << endl;
 
@@ -378,7 +378,7 @@ int main(){
 			elapsed = chrono::duration_cast<chrono::microseconds>(end - start);
 
 			cout << "---------------- Trie ----------------" << endl;
-			cout << "There are [" << total << "] births of prefix \"" << name << "-\"  (" << sex << ") from " << year << " to " << year2 << "." << endl;
+			cout << "There are [" << total << "] births of prefix \"" << name << "-\" (" << sex << ") from " << year << " to " << year2 << "." << endl;
 			cout << "Time: " << elapsed.count() << " microseconds" << endl;
 			cout << endl;
 
@@ -394,7 +394,7 @@ int main(){
 			elapsed = chrono::duration_cast<chrono::microseconds>(end - start);
 
 			cout << "---------------- Hash ----------------" << endl;
-			// cout << "There are [" << total << "] births of prefix \"" << name << "-\"  (" << sex << ") from " << year << " to " << year2 << "." << endl;
+			cout << "There are [" << total << "] births of prefix \"" << name << "-\" (" << sex << ") from " << year << " to " << year2 << "." << endl;
 			cout << "Time: " << elapsed.count() << " microseconds" << endl;
 			cout << endl;
 
@@ -417,7 +417,10 @@ int main(){
 			elapsed = chrono::duration_cast<chrono::microseconds>(end - start);
 
 			cout << "---------------- Trie ----------------" << endl;
-			cout << "The top " << N << " names for prefix \"" << name << "-\" (" << sex << ") are as follows:" << endl;
+			cout << "The top " << N << " names for prefix \"" << name << "-\" (" << sex << ")";
+			if (year != -1)
+				cout << " in " << year;
+			cout << " are as follows:" << endl;
 			for (int i = 0; i < topN.size(); i++) {
 				cout << i+1 << ". " << topN[i].first << " " << topN[i].second << endl;
 			}
@@ -434,7 +437,10 @@ int main(){
 			elapsed = chrono::duration_cast<chrono::microseconds>(end - start);
 
 			cout << "---------------- Hash ----------------" << endl;
-			cout << "The top " << N << " names for prefix \"" << name << "-\" (" << sex << ") are as follows:" << endl;
+			cout << "The top " << N << " names for prefix \"" << name << "-\" (" << sex << ")";
+			if (year != -1)
+				cout << " in " << year;
+			cout << " are as follows:" << endl;
 			for (int i = 0; i < topN.size(); i++) {
 				cout << i+1 << ". " << topN[i].first << " " << topN[i].second << endl;
 			}
