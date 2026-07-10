@@ -20,6 +20,7 @@ void printMenu() {
 		"9. Prefix - top N names (sex/year filter)\n" //prefix, sex, year, N
 		"10. Run performance benchmark\n"
 		"11. Quit" << endl;
+		cout << endl;
 }
 
 long long findAverage(vector<long long> nums) {
@@ -107,7 +108,7 @@ int main(){
 
 		while (selection == -1) {
 			line.clear();
-			cout << "\nPlease enter your selection (#0-11): ";
+			cout << "Please enter your selection (#0-11): ";
 			getline(cin, line);
 			try {
 				selection = stoi(line);
@@ -560,7 +561,7 @@ int main(){
 			running = false;
 		}
 		if (selection != 11)
-			cout << "[Press 0 to Reprint the Menu]" << endl;
+			cout << "[Press 0 to Reprint the Menu]\n" << endl;
 	}
 
 	return 0;
