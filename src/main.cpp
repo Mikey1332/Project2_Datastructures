@@ -68,20 +68,31 @@ int main(){
 	vector<long long> trieTopNTimes;
 	vector<long long> hashTopNTimes;
 
+	cout << "Loading Data..." << endl;
+	cout << "0%" << endl;
+
 	//Do File Parsing:
 	Parser parser;
+
+	cout << "20%" << endl;
 
 	//Trie:
 	start = chrono::high_resolution_clock::now();
 	parser.insertTrie(trie);
 	end = chrono::high_resolution_clock::now();
+	cout << "40%" << endl;
 	trieInsertTime = chrono::duration_cast<chrono::microseconds>(end - start).count();
+
+	cout << "60%" << endl;
 
 	//Hash:
 	start = chrono::high_resolution_clock::now();
 	parser.insertHash(hash);
 	end = chrono::high_resolution_clock::now();
+	cout << "80%" << endl;
 	hashInsertTime = chrono::duration_cast<chrono::microseconds>(end - start).count();
+
+	cout << "100%\n" << endl;
 
 	//User Selection
 	printMenu();
