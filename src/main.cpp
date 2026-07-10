@@ -38,6 +38,7 @@ int main(){
 	string line, name, selectionString;
 	char sex = ' ';
 	bool running = true;
+	bool pref;
 	int selection = -1;
 	int year = -1;
 	int year2 = -1;
@@ -110,6 +111,10 @@ int main(){
 			getline(cin, line);
 			try {
 				selection = stoi(line);
+				if (selection >= 5 && selection <= 9)
+					pref = true;
+				else
+					pref = false;
 			}
 			catch (exception& e) {
 				cout << "Please enter a valid number." << endl;
@@ -123,7 +128,7 @@ int main(){
 		//Name/Prefix Insert:
 		if (selection != 0 && selection != 10 && selection != 11) {
 			name.clear();
-			cout << "Please enter the name/prefix: ";
+			cout << "Please enter the " << (pref ? "prefix" : "name") <<": ";
 			getline(cin, name);
 		}
 
