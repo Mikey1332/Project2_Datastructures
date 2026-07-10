@@ -31,8 +31,8 @@ public:
     void print(int year); // just a basic print function for maybe all names + gender in a year with their count.
     int getAllTimeTotal(string name, char sex, bool pref);
     int getYearTotal(string name, char sex, int year, bool pref);
-    vector<pair<int,int>> yearToYearTrend(string name, char sex, bool pref);
     vector<pair<string, int>> topN(string name, char sex, int year, int n);
+    vector<pair<int,int>> yearToYearTrend(string name, char sex, bool pref);
 
     // needed a destructor
     ~Trie();

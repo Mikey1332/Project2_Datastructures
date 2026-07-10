@@ -38,6 +38,7 @@ public:
     int getAllTimeTotal(string name, char sex, bool pref);
     int getYearTotal(string name, char sex, int year, bool pref);
     vector<pair<string, int>> topN(string name, char sex, int year, int n);
+    vector<pair<int,int>> yearToYearTrend(string name, char sex, bool pref);
 };
 
 #endif //COP3530_PROJECT_2_HASH_H

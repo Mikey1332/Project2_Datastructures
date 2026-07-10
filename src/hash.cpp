@@ -175,3 +175,7 @@ vector<pair<string, int>> HashTable::topN(string name, char sex, int year, int n
 
     return results;
 }
+
+vector<pair<int,int>> yearToYearTrend(string name, char sex, bool pref) {
+    return {};
+}
