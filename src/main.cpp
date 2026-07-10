@@ -616,6 +616,12 @@ int main(){
 			cout << setw(45) << "Total Search Time (avg.)"
 				 << setw(15) << (trieSum == 0 ? "----" : to_string(trieSum))
 				 << setw(15) << (hashSum == 0 ? "----" : to_string(hashSum)) << endl;
+
+			cout << "---------------------------------------------------------------------------" << endl;
+
+			cout << setw(45) << "Total Time"
+				 << setw(15) << (trieSum == 0 ? "----" : to_string(trieSum+trieTime))
+				 << setw(15) << (hashSum == 0 ? "----" : to_string(hashSum+hashTime)) << endl;
 			cout << endl;
 		}
 		else { //if (selection == 11) - Quitting
