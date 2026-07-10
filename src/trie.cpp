@@ -46,14 +46,15 @@ int Trie::getAllTimeTotal(string name, char sex, bool pref) {
 }
 
 int Trie::getTotalOfPrefixHelper(TrieNode* node, char sex) {
-    //This goes through each letter for each node, even if it's not a child
     if (node == nullptr)
         return 0;
     int total = 0;
     if (!node->name.empty())
         total+=node->data.getAllTimeTotal(sex);
-    for (TrieNode* child : node->children)
-        total += getTotalOfPrefixHelper(child, sex);
+    for (TrieNode* child : node->children) {
+        if (child) // Only do it if child!
+            total += getTotalOfPrefixHelper(child, sex);
+    }
     return total;
 }
 
