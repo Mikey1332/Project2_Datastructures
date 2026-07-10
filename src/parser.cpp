@@ -8,7 +8,7 @@ GenderData::GenderData() {
     femaleTotal = 0;
 }
 
-vector<pair<int, int>> &GenderData::get(char gender) {
+vector<pair<int, int>> GenderData::get(char gender) {
     if (gender == 'M')
         return M;
     if (gender == 'F')
