@@ -90,6 +90,8 @@ int Trie::getYearTotalOfPrefixHelper(TrieNode* node, string name, char sex, int 
 }
 
 vector<pair<string, int>> Trie::topN(string name, char sex, int n) {
+    if (n <= 0)
+        return {};
 
     vector<pair<string, int>> results;
     int minCount = 0;

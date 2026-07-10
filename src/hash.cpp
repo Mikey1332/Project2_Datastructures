@@ -117,6 +117,9 @@ int HashTable::getYearTotal(string name, char sex, int year, bool pref) {
 }
 
 vector<pair<string, int>> HashTable::topN(string name, char sex, int n) {
+    if (n <= 0)
+        return {};
+
     vector<pair<string, int>> results;
     int minCount = 0;
     int minIndex = 0;
