@@ -6,7 +6,7 @@ string HashTable::properCase(const string& s) {
     if (s.empty()) return s;
 
     string result = s;
-    for (size_t i = 0; i < result.size(); i++) {
+    for (int i = 0; i < (int)result.size(); i++) {
         result[i] = (i == 0) ? toupper(result[i]) : tolower(result[i]);
     }
     return result;
@@ -207,5 +207,44 @@ vector<pair<string, int>> HashTable::topN(string name, char sex, int year, int n
 }
 
 vector<pair<int,int>> HashTable::yearToYearTrend(string name, char sex, bool pref) {
-    return {};
+    vector<pair<int,int>> results;
+
+    // Exact name search
+    if (!pref) {
+        GenderData* data = getData(name);
+        if (!data)
+            return {};
+        return data->get(sex);
+    }
+
+    // Prefix search: combine year totals across every matching name
+    string prefix = properCase(name);
+
+    for (const Slot& slot : buckets) {
+        if (!slot.occupied) continue;
+        if ((int)slot.name.length() < (int)prefix.length()) continue;
+
+        bool matches = true;
+        for (int j = 0; j < (int)prefix.length(); j++) {
+            if (slot.name[j] != prefix[j]) {
+                matches = false;
+                break;
+            }
+        }
+        if (!matches) continue;
+
+        for (const pair<int,int>& p : slot.data.get(sex)) {
+            bool found = false;
+            for (pair<int,int>& result : results) {
+                if (result.first == p.first) {
+                    result.second += p.second;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+                results.push_back(p);
+        }
+    }
+    return results;
 }

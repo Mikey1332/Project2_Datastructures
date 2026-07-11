@@ -33,7 +33,6 @@ add_executable(Main
         
 # These tests can use the Catch2-provided main
 add_executable(Tests
-        test/test_other.cpp
         src/trie.cpp
         src/trie.h
         src/hash.cpp

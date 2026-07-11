@@ -23,6 +23,26 @@ void printMenu() {
 		cout << endl;
 }
 
+bool validName(const string& s) {
+	if (s.empty())
+		return false;
+	for (char c : s) {
+		if (!isalpha(static_cast<unsigned char>(c)))
+			return false;
+	}
+	return true;
+}
+
+string properCase(const string& s) {
+	if (s.empty()) return s;
+
+	string result = s;
+	for (int i = 0; i < (int)result.size(); i++) {
+		result[i] = (i == 0) ? toupper(result[i]) : tolower(result[i]);
+	}
+	return result;
+}
+
 long long findAverage(vector<long long> nums) {
 	if (nums.empty())
 		return 0;
@@ -131,6 +151,12 @@ int main(){
 			name.clear();
 			cout << "Please enter the " << (pref ? "prefix" : "name") <<": ";
 			getline(cin, name);
+
+			while (!validName(name)) {
+				cout << "Please enter letters only (no numbers or symbols): ";
+				getline(cin, name);
+			}
+			name = properCase(name);
 		}
 
 		//Specific Year Selection
@@ -146,6 +172,10 @@ int main(){
 					break;
 				try {
 					year = stoi(line);
+					if (year < 1880 || year > 2025) {
+						cout << "Please enter a year between 1880 and 2025." << endl;
+						year = -1;
+					}
 				}
 				catch (exception& e) {
 					cout << "Please enter a valid number." << endl;
@@ -160,6 +190,10 @@ int main(){
 				getline(cin, line);
 				try {
 					year = stoi(line);
+					if (year < 1880 || year > 2025) {
+						cout << "Please enter a year between 1880 and 2025." << endl;
+						year = -1;
+					}
 				}
 				catch (exception& e) {
 					cout << "Please enter a valid number." << endl;
@@ -171,6 +205,14 @@ int main(){
 				getline(cin, line);
 				try {
 					year2 = stoi(line);
+					if (year2 < 1880 || year2 > 2025) {
+						cout << "Please enter a year between 1880 and 2025." << endl;
+						year2 = -1;
+					}
+					else if (year2 < year) {
+						cout << "Ending year must be on or after the starting year (" << year << ")." << endl;
+						year2 = -1;
+					}
 				}
 				catch (exception& e) {
 					cout << "Please enter a valid number." << endl;
@@ -220,7 +262,6 @@ int main(){
 			printMenu();
 		}
 		else if (selection == 1) {
-			// cout << "You chose total births of \"" << name << "\" (" << sex << ") for all time." << endl;
 			int allTimeTotal;
 
 			start = chrono::high_resolution_clock::now();
@@ -248,7 +289,6 @@ int main(){
 			hashAllTimeBirthTimes.push_back(elapsed.count());
 		}
 		else if (selection == 2) {
-			// cout << "You chose total births of \"" << name << "\" (" << sex << ") in " << year << "." << endl;
 			int yearTotal;
 
 			start = chrono::high_resolution_clock::now();
@@ -277,7 +317,6 @@ int main(){
 
 		}
 		else if (selection == 3) {
-			// cout << "You chose total births of \"" << name << "\" (" << sex << ") from " << year << " to " << year2 << "." << endl;
 
 			int total = 0;
 			start = chrono::high_resolution_clock::now();
@@ -327,23 +366,22 @@ int main(){
 
 			trieYearByYearBirthTimes.push_back(elapsed.count());
 
-			// start = chrono::high_resolution_clock::now();
-			// yearTrends = hash.yearToYearTrend(name, sex, false);
-			// end = chrono::high_resolution_clock::now();
-			// elapsed = chrono::duration_cast<chrono::microseconds>(end - start);
-			//
-			// cout << "---------------- Hash ----------------" << endl;
-			// cout << "The year-by-year trend of \"" << name << "\" (" << sex << ") is as follows:" << endl;
-			// for (int i = 0; i < yearTrends.size(); i++) {
-			// 	cout << yearTrends[i].first << ":  " << yearTrends[i].second << endl;
-			// }
-			// cout << "Time: " << elapsed.count() << " microseconds" << endl;
-			// cout << endl;
-			//
-			// hashYearByYearBirthTimes.push_back(elapsed.count());
+			start = chrono::high_resolution_clock::now();
+			yearTrends = hash.yearToYearTrend(name, sex, false);
+			end = chrono::high_resolution_clock::now();
+			elapsed = chrono::duration_cast<chrono::microseconds>(end - start);
+
+			cout << "---------------- Hash ----------------" << endl;
+			cout << "The year-by-year trend of \"" << name << "\" (" << sex << ") is as follows:" << endl;
+			for (int i = 0; i < (int)yearTrends.size(); i++) {
+				cout << yearTrends[i].first << ":  " << yearTrends[i].second << endl;
+			}
+			cout << "Time: " << elapsed.count() << " microseconds" << endl;
+			cout << endl;
+
+			hashYearByYearBirthTimes.push_back(elapsed.count());
 		}
 		else if (selection == 5) {
-			// cout << "You chose total births of prefix \"" << name << "-\" (" << sex << ") for all time." << endl;
 			int allTimeTotal = 0;
 
 			start = chrono::high_resolution_clock::now();
@@ -373,7 +411,6 @@ int main(){
 			hashAllTimeBirthTimesPrefix.push_back(elapsed.count());
 		}
 		else if (selection == 6) {
-			// cout << "You chose total births of prefix \"" << name << "-\" (" << sex << ") in " << year << "." << endl;
 			int yearTotal = 0;
 
 			start = chrono::high_resolution_clock::now();
@@ -404,8 +441,6 @@ int main(){
 
 		}
 		else if (selection == 7) {
-			// cout << "You chose total births of prefix \"" << name << "-\" (" << sex << ") from " << year << " to " << year2 << "." << endl;
-
 			int total = 0;
 			start = chrono::high_resolution_clock::now();
 			for (int y = year; y <= year2; y++) {
@@ -438,7 +473,6 @@ int main(){
 			hashYearRangeBirthTimesPrefix.push_back(elapsed.count());
 		}
 		else if (selection == 8) {
-			// cout << "You chose the year-by-year trend of prefix \"" << name << "-\" (" << sex << ")." << endl;
 			vector<pair<int, int>> yearTrends = {};
 
 			start = chrono::high_resolution_clock::now();
@@ -456,27 +490,22 @@ int main(){
 
 			trieYearByYearBirthTimesPrefix.push_back(elapsed.count());
 
-			// start = chrono::high_resolution_clock::now();
-			// yearTrends = hash.yearToYearTrend(name, sex, true);
-			// end = chrono::high_resolution_clock::now();
-			// elapsed = chrono::duration_cast<chrono::microseconds>(end - start);
-			//
-			// cout << "---------------- Hash ----------------" << endl;
-			// cout << "The year-by-year trend of prefix \"" << name << "-\" (" << sex << ") is as follows:" << endl;
-			// for (int i = 0; i < yearTrends.size(); i++) {
-			// 	cout << yearTrends[i].first << ":  " << yearTrends[i].second << endl;
-			// }
-			// cout << "Time: " << elapsed.count() << " microseconds" << endl;
-			// cout << endl;
-			//
-			// hashYearByYearBirthTimesPrefix.push_back(elapsed.count());
+			start = chrono::high_resolution_clock::now();
+			yearTrends = hash.yearToYearTrend(name, sex, true);
+			end = chrono::high_resolution_clock::now();
+			elapsed = chrono::duration_cast<chrono::microseconds>(end - start);
+
+			cout << "---------------- Hash ----------------" << endl;
+			cout << "The year-by-year trend of prefix \"" << name << "-\" (" << sex << ") is as follows:" << endl;
+			for (int i = 0; i < (int)yearTrends.size(); i++) {
+				cout << yearTrends[i].first << ":  " << yearTrends[i].second << endl;
+			}
+			cout << "Time: " << elapsed.count() << " microseconds" << endl;
+			cout << endl;
+
+			hashYearByYearBirthTimesPrefix.push_back(elapsed.count());
 		}
 		else if (selection == 9) {
-			// cout << "You chose the top " << N << " names for prefix \"" << name << "-\" (" << sex << ")";
-			// if (year != -1)
-			// 	cout << " in " << year;
-			// cout << "." << endl;
-
 			vector<pair<string, int>> topN;
 
 			start = chrono::high_resolution_clock::now();
@@ -489,7 +518,7 @@ int main(){
 			if (year != -1)
 				cout << " in " << year;
 			cout << " are as follows:" << endl;
-			for (size_t i = 0; i < topN.size(); i++) {
+			for (int i = 0; i < (int)topN.size(); i++) {
 				cout << i+1 << ". " << topN[i].first << " " << topN[i].second << endl;
 			}
 			cout << "Time: " << elapsed.count() << " microseconds" << endl;
@@ -509,7 +538,7 @@ int main(){
 			if (year != -1)
 				cout << " in " << year;
 			cout << " are as follows:" << endl;
-			for (size_t i = 0; i < topN.size(); i++) {
+			for (int i = 0; i < (int)topN.size(); i++) {
 				cout << i+1 << ". " << topN[i].first << " " << topN[i].second << endl;
 			}
 			cout << "Time: " << elapsed.count() << " microseconds" << endl;
