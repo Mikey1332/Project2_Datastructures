@@ -111,12 +111,6 @@ vector<pair<string, int>> Trie::topN(string name, char sex, int year, int n) {
     topNHelper(curr, sex, year, n, results, minCount, minIndex);
 
     // sort results before returning
-    // temporarily use sort()
-    /*
-    sort(results.begin(), results.end(), [](const pair<string,int>& a, const pair<string,int>& b) {
-         return a.second > b.second;
-     });
-    */
     for (int i = 1; i < (int)results.size(); i++) {
         pair<string,int> key = results[i];
         int j = i - 1;
