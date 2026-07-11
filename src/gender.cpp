@@ -93,35 +93,3 @@ int GenderData::getAllTimeTotal(char gender) const{
     //If gender == 'A'
     return maleTotal + femaleTotal;
 }
-
-// file parsing logic, would work only if exe of main.cpp is located outside of any folder since it is relative. - update if main exe is not.
-// rn the main.exe file path is being sent into cmake-build-debug, so its rn: ../data/names; but if someone moves it, this wont work.
-/*
-void GenderData::loadData() {
-    ofstream outFile("../test/test_textFromData.txt"); // for test purposes
-    for(int year = 1880; year < 2026; year++) {
-        string year_str = to_string(year);
-        ifstream file("../data/names/yob" + year_str + ".txt");
-        if (!file.is_open()) {
-            cout << year_str << " not found" << endl;
-            return; // maybe to add something else for test.cpp but for now this is fine.
-        }
-        string line;
-
-        while(getline(file, line)) {
-            stringstream ss(line);
-            string name;
-            string genderStr;
-            string countStr;
-            if(getline(ss, name, ',') && getline(ss, genderStr, ',') && getline(ss, countStr, ',')) {
-                char gender = genderStr[0];
-                int count = stoi(countStr);
-                insert(gender, year, count);
-                outFile << name + ", " + genderStr << ", " << count << ", " << year << endl;
-            }
-        }
-    }
-}
-
-outdated, was better to make a separate struct in load.h and load.cpp so that way its possible to have to separate insert functions and testing their time for each structure.
-*/

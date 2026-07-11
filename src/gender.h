@@ -20,11 +20,6 @@ class GenderData {
 public:
 
     GenderData();
-    // vector<pair<int,int>> get(char gender);
-    // int getCount(char gender, int year);
-    // void insert(char gender, int year, int count);
-    // int getAllTimeTotal(char gender);
-
     vector<pair<int,int>> get(char gender) const;
     int getCount(char gender, int year) const;
     void insert(char gender, int year, int count);
