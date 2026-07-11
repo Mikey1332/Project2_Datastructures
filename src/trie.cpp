@@ -188,6 +188,16 @@ vector<pair<int,int>> Trie::yearToYearTrend(string name, char sex, bool pref) {
     }
     //If it is a prefix
     yearToYearTrendHelper(curr, sex, results);
+    for (int i = 1; i < (int)results.size(); i++) {
+        pair<int,int> key = results[i];
+        int j = i - 1;
+
+        while (j >= 0 && results[j].first > key.first) {
+            results[j + 1] = results[j];
+            j--;
+        }
+        results[j + 1] = key;
+    }
     return results;
 }
 

@@ -252,5 +252,15 @@ vector<pair<int,int>> HashTable::yearToYearTrend(string name, char sex, bool pre
                 results.push_back(p);
         }
     }
+    for (int i = 1; i < (int)results.size(); i++) {
+        pair<int,int> key = results[i];
+        int j = i - 1;
+
+        while (j >= 0 && results[j].first > key.first) {
+            results[j + 1] = results[j];
+            j--;
+        }
+        results[j + 1] = key;
+    }
     return results;
 }
