@@ -22,7 +22,7 @@ class GenderData {
 public:
 
     GenderData();
-    vector<pair<int,int>>& get(char gender) const;
+    const vector<pair<int,int>>& get(char gender) const;
     int getCount(char gender, int year) const;
     void insert(char gender, int year, int count);
     int getAllTimeTotal(char gender) const;
