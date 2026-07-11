@@ -652,6 +652,16 @@ int main(){
 				 << setw(15) << (trieSum == 0 ? "----" : to_string(trieSum+trieTime))
 				 << setw(15) << (hashSum == 0 ? "----" : to_string(hashSum+hashTime)) << endl;
 			cout << endl;
+
+			if (trieSum+trieTime < hashSum+hashTime) {
+				cout << "Overall Benchmark Result: Trie outperformed the Hash Table in total performance." << endl;
+			}
+			else if (trieSum+trieTime > hashSum+hashTime) {
+				cout << "Overall Benchmark Result: Hash Table outperformed the Trie in total performance." << endl;
+			}
+			else
+				cout << "Overall Benchmark Result: Trie and Hash Table performed equally overall." << endl;
+			cout << endl;
 		}
 		else { //if (selection == 11) - Quitting
 			cout << "Quitting..." << endl;
