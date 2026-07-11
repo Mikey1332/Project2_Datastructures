@@ -13,14 +13,16 @@ class GenderData {
     int femaleTotal = 0;
     vector<pair<int,int>> M = {};
     vector<pair<int,int>> F = {};
+    vector<pair<int,int>> A = {};
 
     void insertInOrder(vector<pair<int, int>> &allYears, int year, int count);
     int getCountHelper(const vector<pair<int, int>> &allYears, int year) const;
+    void createCombined();
 
 public:
 
     GenderData();
-    vector<pair<int,int>> get(char gender) const;
+    vector<pair<int,int>>& get(char gender) const;
     int getCount(char gender, int year) const;
     void insert(char gender, int year, int count);
     int getAllTimeTotal(char gender) const;

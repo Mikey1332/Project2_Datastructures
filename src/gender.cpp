@@ -8,16 +8,41 @@ GenderData::GenderData() {
     femaleTotal = 0;
 }
 
-vector<pair<int, int>> GenderData::get(char gender) const{
+vector<pair<int, int>>& GenderData::get(char gender) const{
     if (gender == 'M')
         return M;
     if (gender == 'F')
         return F;
-    vector<pair<int, int>> combined = M;
-    for (pair<int, int> p : F) {
-        combined.push_back(p);
+    return A;
+}
+
+void GenderData::createCombined() {
+    A.clear();
+    int i = 0;
+    int j = 0;
+    while (i < M.size() && j < F.size()) {
+        if (M[i].first == F[j].first) {
+            A.emplace_back(M[i].first, M[i].second + F[j].second);
+            i++;
+            j++;
+        }
+        else if (M[i].first < F[j].first) {
+            A.push_back(M[i]);
+            i++;
+        }
+        else {
+            A.push_back(F[j]);
+            j++;
+        }
     }
-    return combined;
+    while (i < M.size()) {
+        A.push_back(M[i]);
+        i++;
+    }
+    while (j < F.size()) {
+        A.push_back(F[j]);
+        j++;
+    }
 }
 
 int GenderData::getCount(char gender, int year) const {
@@ -63,6 +88,7 @@ void GenderData::insert(char gender, int year, int count) {
         femaleTotal += count;
         insertInOrder(F, year, count);
     }
+    createCombined();
 }
 
 void GenderData::insertInOrder(vector<pair<int, int>> &allYears, int year, int count) {
